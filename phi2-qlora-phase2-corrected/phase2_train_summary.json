@@ -1,0 +1,40 @@
+{
+  "training_time_seconds": 3486.16,
+  "peak_vram_allocated_mb": 3061.13,
+  "peak_vram_reserved_mb": 3234.0,
+  "train_loss": 0.4323227564493815,
+  "global_step": 450,
+  "final_eval_loss": 0.41746771335601807,
+  "final_eval_step": 400,
+  "metrics": {
+    "train_runtime": 3477.679,
+    "train_samples_per_second": 1.035,
+    "train_steps_per_second": 0.129,
+    "total_flos": 9489260937277440.0,
+    "train_loss": 0.4323227564493815,
+    "epoch": 2.0
+  },
+  "config": {
+    "model_id": "microsoft/phi-2",
+    "dataset": "iamtarun/python_code_instructions_18k_alpaca",
+    "num_samples": 2000,
+    "eval_ratio": 0.1,
+    "output_dir": "./phi2-qlora-phase2-corrected",
+    "rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": "q_proj,v_proj",
+    "epochs": 2,
+    "learning_rate": 0.0002,
+    "scheduler": "cosine",
+    "optimizer": "adamw_torch",
+    "warmup_ratio": 0.03,
+    "batch_size": 1,
+    "grad_accum_steps": 8,
+    "max_seq_length": 512,
+    "logging_steps": 25,
+    "save_steps": 200,
+    "eval_steps": 100,
+    "seed": 42
+  }
+}
