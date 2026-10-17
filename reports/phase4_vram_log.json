@@ -1,0 +1,79 @@
+[
+  {
+    "config": "config_e",
+    "step": 100,
+    "vram_allocated_mb": 3061.13,
+    "vram_reserved_mb": 3252.0,
+    "timestamp_utc": "2026-09-21T09:12:40.395860"
+  },
+  {
+    "config": "config_e",
+    "step": 200,
+    "vram_allocated_mb": 3061.13,
+    "vram_reserved_mb": 3258.0,
+    "timestamp_utc": "2026-09-21T09:28:58.022937"
+  },
+  {
+    "config": "config_e",
+    "step": 300,
+    "vram_allocated_mb": 3061.13,
+    "vram_reserved_mb": 3258.0,
+    "timestamp_utc": "2026-09-21T09:45:13.713371"
+  },
+  {
+    "config": "config_e",
+    "step": 400,
+    "vram_allocated_mb": 3061.13,
+    "vram_reserved_mb": 3258.0,
+    "timestamp_utc": "2026-09-21T09:59:07.551106"
+  },
+  {
+    "config": "config_e",
+    "step": 500,
+    "vram_allocated_mb": 3061.13,
+    "vram_reserved_mb": 3258.0,
+    "timestamp_utc": "2026-09-21T10:13:46.331243"
+  },
+  {
+    "config": "config_e",
+    "step": 600,
+    "vram_allocated_mb": 3061.13,
+    "vram_reserved_mb": 3258.0,
+    "timestamp_utc": "2026-09-21T10:28:21.833458"
+  },
+  {
+    "config": "config_e",
+    "step": 700,
+    "vram_allocated_mb": 3061.13,
+    "vram_reserved_mb": 3258.0,
+    "timestamp_utc": "2026-09-21T10:43:03.901548"
+  },
+  {
+    "config": "config_e",
+    "step": 800,
+    "vram_allocated_mb": 3061.13,
+    "vram_reserved_mb": 3258.0,
+    "timestamp_utc": "2026-09-21T10:56:47.555016"
+  },
+  {
+    "config": "config_e",
+    "step": 900,
+    "vram_allocated_mb": 3061.13,
+    "vram_reserved_mb": 3258.0,
+    "timestamp_utc": "2026-09-21T11:09:16.434866"
+  },
+  {
+    "config": "config_e",
+    "step": 1000,
+    "vram_allocated_mb": 3061.13,
+    "vram_reserved_mb": 3258.0,
+    "timestamp_utc": "2026-09-21T11:21:47.631542"
+  },
+  {
+    "config": "config_e",
+    "step": 1100,
+    "vram_allocated_mb": 3061.13,
+    "vram_reserved_mb": 3258.0,
+    "timestamp_utc": "2026-09-21T11:35:53.394458"
+  }
+]

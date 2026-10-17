@@ -1,0 +1,652 @@
+[
+  {
+    "id": 1,
+    "category": "String Manipulation",
+    "instruction": "Write a Python function that checks if two strings are anagrams of each other (case-insensitive).",
+    "input": "",
+    "expected_behavior": "Returns True if one string is a rearrangement of the other, False otherwise.",
+    "unit_tests": [
+      {"description": "normal anagram pair", "call": "fn('listen', 'silent')", "expected": true},
+      {"description": "case-insensitive anagram", "call": "fn('Triangle', 'Integral')", "expected": true},
+      {"description": "not an anagram", "call": "fn('hello', 'world')", "expected": false}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn('listen', 'silent') is True, 'Failed on listen/silent'\n    assert candidate_fn('Triangle', 'Integral') is True, 'Failed on Triangle/Integral'\n    assert candidate_fn('hello', 'world') is False, 'Failed on hello/world'\n    assert candidate_fn('', '') is True, 'Failed on empty strings'\n"
+  },
+  {
+    "id": 2,
+    "category": "String Manipulation",
+    "instruction": "Write a Python function that performs run-length encoding on a string. For example, 'aaabbc' becomes '3a2b1c'.",
+    "input": "",
+    "expected_behavior": "Consecutive repeated characters are replaced with count+character.",
+    "unit_tests": [
+      {"description": "normal encoding", "call": "fn('aaabbc')", "expected": "'3a2b1c'"},
+      {"description": "single characters", "call": "fn('abc')", "expected": "'1a1b1c'"},
+      {"description": "empty string", "call": "fn('')", "expected": "''"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn('aaabbc') == '3a2b1c', f'Got {candidate_fn(\"aaabbc\")}'\n    assert candidate_fn('abc') == '1a1b1c', f'Got {candidate_fn(\"abc\")}'\n    assert candidate_fn('') == '', f'Got {candidate_fn(\"\")}'\n    assert candidate_fn('aaaa') == '4a', f'Got {candidate_fn(\"aaaa\")}'\n"
+  },
+  {
+    "id": 3,
+    "category": "String Manipulation",
+    "instruction": "Write a Python function that applies a Caesar cipher to a string, shifting each letter by a given number of positions.",
+    "input": "shift=3",
+    "expected_behavior": "Letters are shifted by the given amount, wrapping around the alphabet. Non-letter characters are unchanged.",
+    "unit_tests": [
+      {"description": "basic shift", "call": "fn('abc', 3)", "expected": "'def'"},
+      {"description": "wrap-around", "call": "fn('xyz', 3)", "expected": "'abc'"},
+      {"description": "non-alpha preserved", "call": "fn('Hello, World!', 0)", "expected": "'Hello, World!'"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn('abc', 3) == 'def', f'Got {candidate_fn(\"abc\", 3)}'\n    assert candidate_fn('xyz', 3) == 'abc', f'Got {candidate_fn(\"xyz\", 3)}'\n    assert candidate_fn('Hello, World!', 0) == 'Hello, World!', f'Got {candidate_fn(\"Hello, World!\", 0)}'\n"
+  },
+  {
+    "id": 4,
+    "category": "String Manipulation",
+    "instruction": "Write a Python function that converts a string to title case without using the str.title() method.",
+    "input": "",
+    "expected_behavior": "The first letter of each word is capitalised and the rest are lower-cased.",
+    "unit_tests": [
+      {"description": "normal sentence", "call": "fn('hello world')", "expected": "'Hello World'"},
+      {"description": "already title case", "call": "fn('Python Programming')", "expected": "'Python Programming'"},
+      {"description": "empty string", "call": "fn('')", "expected": "''"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn('hello world') == 'Hello World', f'Got {candidate_fn(\"hello world\")}'\n    assert candidate_fn('the quick brown fox') == 'The Quick Brown Fox', f'Got {candidate_fn(\"the quick brown fox\")}'\n    assert candidate_fn('') == '', f'Got {candidate_fn(\"\")}'\n"
+  },
+  {
+    "id": 5,
+    "category": "String Manipulation",
+    "instruction": "Write a Python function that compresses multiple consecutive whitespace characters in a string into a single space and strips leading/trailing whitespace.",
+    "input": "",
+    "expected_behavior": "Multiple spaces, tabs, and newlines between words are reduced to a single space.",
+    "unit_tests": [
+      {"description": "multiple spaces", "call": "fn('hello   world')", "expected": "'hello world'"},
+      {"description": "tabs and newlines", "call": "fn('  foo\\t\\nbar  ')", "expected": "'foo bar'"},
+      {"description": "single space unchanged", "call": "fn('a b')", "expected": "'a b'"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn('hello   world') == 'hello world', f'Got {repr(candidate_fn(\"hello   world\"))}'\n    assert candidate_fn('  foo\\t\\nbar  ') == 'foo bar', f'Got {repr(candidate_fn(\"  foo\\t\\nbar  \"))}'\n    assert candidate_fn('a b') == 'a b', f'Got {repr(candidate_fn(\"a b\"))}'\n"
+  },
+  {
+    "id": 6,
+    "category": "String Manipulation",
+    "instruction": "Write a Python function that computes the Levenshtein (edit) distance between two strings.",
+    "input": "",
+    "expected_behavior": "Returns the minimum number of single-character edits (insertions, deletions, substitutions) required to change one string into the other.",
+    "unit_tests": [
+      {"description": "same string", "call": "fn('kitten', 'kitten')", "expected": 0},
+      {"description": "classic example", "call": "fn('kitten', 'sitting')", "expected": 3},
+      {"description": "empty string", "call": "fn('', 'abc')", "expected": 3}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn('kitten', 'kitten') == 0, f'Got {candidate_fn(\"kitten\", \"kitten\")}'\n    assert candidate_fn('kitten', 'sitting') == 3, f'Got {candidate_fn(\"kitten\", \"sitting\")}'\n    assert candidate_fn('', 'abc') == 3, f'Got {candidate_fn(\"\", \"abc\")}'\n    assert candidate_fn('abc', '') == 3, f'Got {candidate_fn(\"abc\", \"\")}'\n"
+  },
+  {
+    "id": 7,
+    "category": "Data Structures",
+    "instruction": "Implement a simple LRU Cache in Python using a class. The cache should support get(key) and put(key, value) operations with a fixed capacity.",
+    "input": "capacity=2",
+    "expected_behavior": "get returns -1 on miss; put evicts the least-recently-used entry when capacity is exceeded.",
+    "unit_tests": [
+      {"description": "basic put and get", "call": "cache.put(1,1); cache.get(1)", "expected": 1},
+      {"description": "eviction on overflow", "call": "cache.put(1,1); cache.put(2,2); cache.put(3,3); cache.get(1)", "expected": -1},
+      {"description": "recency update prevents eviction", "call": "cache.put(1,1); cache.put(2,2); cache.get(1); cache.put(3,3); cache.get(2)", "expected": -1}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    import inspect\n    # candidate_fn is the class or a factory; try instantiating it\n    try:\n        cache = candidate_fn(2)\n    except TypeError:\n        # Maybe candidate_fn IS already an instance; try calling the class found in the module\n        raise AssertionError('LRU Cache class must accept capacity as first argument')\n    cache.put(1, 1)\n    cache.put(2, 2)\n    assert cache.get(1) == 1, f'Expected 1, got {cache.get(1)}'\n    cache.put(3, 3)\n    assert cache.get(2) == -1, f'Expected eviction of 2, got {cache.get(2)}'\n    cache.put(4, 4)\n    assert cache.get(1) == -1, f'Expected eviction of 1, got {cache.get(1)}'\n    assert cache.get(3) == 3, f'Expected 3, got {cache.get(3)}'\n    assert cache.get(4) == 4, f'Expected 4, got {cache.get(4)}'\n"
+  },
+  {
+    "id": 8,
+    "category": "Data Structures",
+    "instruction": "Write a Python function that checks whether a string containing only brackets (parentheses, square brackets, and curly braces) is balanced.",
+    "input": "",
+    "expected_behavior": "Returns True if every opening bracket has a corresponding closing bracket in the correct order.",
+    "unit_tests": [
+      {"description": "balanced brackets", "call": "fn('()[]{}')", "expected": true},
+      {"description": "unbalanced brackets", "call": "fn('([)]')", "expected": false},
+      {"description": "empty string", "call": "fn('')", "expected": true}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn('()[]{}') is True, f'Got {candidate_fn(\"()[]{}\")}'  \n    assert candidate_fn('([)]') is False, f'Got {candidate_fn(\"([)]\")}'  \n    assert candidate_fn('') is True, f'Got {candidate_fn(\"\")}'\n    assert candidate_fn('{[()]}') is True, f'Got {candidate_fn(\"{[()]}\")}'  \n    assert candidate_fn('((') is False, f'Got {candidate_fn(\"((\")}'  \n"
+  },
+  {
+    "id": 9,
+    "category": "Data Structures",
+    "instruction": "Write a Python function that builds an undirected graph as an adjacency list from a list of edges represented as tuples.",
+    "input": "edges = [(1,2),(2,3),(3,4)]",
+    "expected_behavior": "Returns a dict mapping each node to a sorted list of its neighbors.",
+    "unit_tests": [
+      {"description": "simple path graph", "call": "fn([(1,2),(2,3)])", "expected": "{1:[2], 2:[1,3], 3:[2]}"},
+      {"description": "disconnected node not added", "call": "fn([])", "expected": "{}"},
+      {"description": "self-loop handled", "call": "fn([(1,1)])", "expected": "{1:[1]}"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    g = candidate_fn([(1, 2), (2, 3)])\n    assert sorted(g[1]) == [2], f'Got {g[1]}'\n    assert sorted(g[2]) == [1, 3], f'Got {g[2]}'\n    assert sorted(g[3]) == [2], f'Got {g[3]}'\n    g2 = candidate_fn([])\n    assert g2 == {}, f'Got {g2}'\n"
+  },
+  {
+    "id": 10,
+    "category": "Data Structures",
+    "instruction": "Implement a MinHeap class in Python with insert and extract_min methods.",
+    "input": "",
+    "expected_behavior": "extract_min always removes and returns the smallest element. Heap property is maintained after each operation.",
+    "unit_tests": [
+      {"description": "insert and extract", "call": "h.insert(3); h.insert(1); h.insert(2); h.extract_min()", "expected": 1},
+      {"description": "repeated extractions maintain order", "call": "h.insert(5); h.insert(3); h.insert(7); [h.extract_min() for _ in range(3)]", "expected": "[3,5,7]"},
+      {"description": "single element", "call": "h.insert(42); h.extract_min()", "expected": 42}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    try:\n        h = candidate_fn()\n    except TypeError:\n        raise AssertionError('MinHeap class must be instantiable with no arguments')\n    h.insert(3)\n    h.insert(1)\n    h.insert(2)\n    assert h.extract_min() == 1, f'Expected 1'\n    assert h.extract_min() == 2, f'Expected 2'\n    assert h.extract_min() == 3, f'Expected 3'\n"
+  },
+  {
+    "id": 11,
+    "category": "Data Structures",
+    "instruction": "Write a Python function that rotates a list (or deque) to the right by k positions.",
+    "input": "k=2",
+    "expected_behavior": "The last k elements become the first k elements. Negative k rotates left.",
+    "unit_tests": [
+      {"description": "rotate right by 2", "call": "fn([1,2,3,4,5], 2)", "expected": "[4,5,1,2,3]"},
+      {"description": "rotate by list length returns same", "call": "fn([1,2,3], 3)", "expected": "[1,2,3]"},
+      {"description": "empty list", "call": "fn([], 2)", "expected": "[]"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert list(candidate_fn([1,2,3,4,5], 2)) == [4,5,1,2,3], f'Got {candidate_fn([1,2,3,4,5], 2)}'\n    assert list(candidate_fn([1,2,3], 3)) == [1,2,3], f'Got {candidate_fn([1,2,3], 3)}'\n    assert list(candidate_fn([], 2)) == [], f'Got {candidate_fn([], 2)}'\n"
+  },
+  {
+    "id": 12,
+    "category": "Data Structures",
+    "instruction": "Write a Python function that inverts a dictionary where values may be non-unique, returning a dict mapping each original value to a list of keys that had that value.",
+    "input": "",
+    "expected_behavior": "Returns a new dict mapping each value to a sorted list of its original keys.",
+    "unit_tests": [
+      {"description": "duplicate values", "call": "fn({'a':1,'b':2,'c':1})", "expected": "{1:['a','c'], 2:['b']}"},
+      {"description": "unique values", "call": "fn({'x':10,'y':20})", "expected": "{10:['x'], 20:['y']}"},
+      {"description": "empty dict", "call": "fn({})", "expected": "{}"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    r = candidate_fn({'a': 1, 'b': 2, 'c': 1})\n    assert sorted(r[1]) == ['a', 'c'], f'Got {r}'\n    assert r[2] == ['b'], f'Got {r}'\n    r2 = candidate_fn({})\n    assert r2 == {}, f'Got {r2}'\n"
+  },
+  {
+    "id": 13,
+    "category": "Data Structures",
+    "instruction": "Implement a fixed-size circular buffer (ring buffer) in Python as a class with append and read methods.",
+    "input": "size=3",
+    "expected_behavior": "When full, appending a new element overwrites the oldest. read returns all current elements in order from oldest to newest.",
+    "unit_tests": [
+      {"description": "fill without overflow", "call": "cb.append(1); cb.append(2); cb.read()", "expected": "[1,2]"},
+      {"description": "overwrite on overflow", "call": "cb.append(1); cb.append(2); cb.append(3); cb.append(4); cb.read()", "expected": "[2,3,4]"},
+      {"description": "empty buffer", "call": "cb.read()", "expected": "[]"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    try:\n        cb = candidate_fn(3)\n    except TypeError:\n        raise AssertionError('CircularBuffer must accept size as argument')\n    assert cb.read() == [], f'Expected [], got {cb.read()}'\n    cb.append(1); cb.append(2); cb.append(3)\n    assert cb.read() == [1, 2, 3], f'Expected [1,2,3], got {cb.read()}'\n    cb.append(4)\n    assert cb.read() == [2, 3, 4], f'Expected [2,3,4], got {cb.read()}'\n"
+  },
+  {
+    "id": 14,
+    "category": "Data Structures",
+    "instruction": "Write a Python function that computes the symmetric difference of two sets without using the built-in ^ operator or symmetric_difference method.",
+    "input": "",
+    "expected_behavior": "Returns a set of elements that are in either set but not in both.",
+    "unit_tests": [
+      {"description": "standard case", "call": "fn({1,2,3},{2,3,4})", "expected": "{1,4}"},
+      {"description": "disjoint sets", "call": "fn({1,2},{3,4})", "expected": "{1,2,3,4}"},
+      {"description": "identical sets", "call": "fn({1,2},{1,2})", "expected": "set()"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn({1,2,3},{2,3,4}) == {1,4}, f'Got {candidate_fn({1,2,3},{2,3,4})}'\n    assert candidate_fn({1,2},{3,4}) == {1,2,3,4}, f'Got {candidate_fn({1,2},{3,4})}'\n    assert candidate_fn({1,2},{1,2}) == set(), f'Got {candidate_fn({1,2},{1,2})}'\n"
+  },
+  {
+    "id": 15,
+    "category": "Sorting & Searching",
+    "instruction": "Implement merge sort in Python. The function should return a new sorted list and not sort in place.",
+    "input": "",
+    "expected_behavior": "Returns a new list sorted in ascending order using the divide-and-conquer merge sort algorithm.",
+    "unit_tests": [
+      {"description": "normal list", "call": "fn([3,1,4,1,5,9,2,6])", "expected": "[1,1,2,3,4,5,6,9]"},
+      {"description": "empty list", "call": "fn([])", "expected": "[]"},
+      {"description": "single element", "call": "fn([7])", "expected": "[7]"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn([3,1,4,1,5,9,2,6]) == [1,1,2,3,4,5,6,9], f'Got {candidate_fn([3,1,4,1,5,9,2,6])}'\n    assert candidate_fn([]) == [], f'Got {candidate_fn([])}'\n    assert candidate_fn([7]) == [7], f'Got {candidate_fn([7])}'\n    assert candidate_fn([5,5,5]) == [5,5,5], f'Got {candidate_fn([5,5,5])}'\n"
+  },
+  {
+    "id": 16,
+    "category": "Sorting & Searching",
+    "instruction": "Write a Python function that implements the partition step of quicksort, returning the final index of the pivot element using the Lomuto partition scheme.",
+    "input": "arr=[3,6,8,10,1,2,1], low=0, high=6",
+    "expected_behavior": "Rearranges the subarray arr[low..high] in-place so that all elements less than the pivot (arr[high]) are to its left, and returns the pivot's final index.",
+    "unit_tests": [
+      {"description": "pivot ends at correct position", "call": "arr=[3,1,2]; fn(arr,0,2); arr[fn([3,1,2],0,2)]", "expected": "2"},
+      {"description": "already sorted subarray", "call": "arr=[1,2,3]; idx=fn(arr,0,2); arr[idx]", "expected": "3"},
+      {"description": "single element", "call": "arr=[42]; fn(arr,0,0)", "expected": 0}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    arr = [3, 1, 2]\n    idx = candidate_fn(arr, 0, 2)\n    assert arr[idx] == 2, f'Pivot value should be arr[high]=2, got {arr[idx]}'\n    for v in arr[:idx]:\n        assert v <= arr[idx], f'Left element {v} > pivot {arr[idx]}'\n    arr2 = [42]\n    idx2 = candidate_fn(arr2, 0, 0)\n    assert idx2 == 0, f'Expected 0, got {idx2}'\n"
+  },
+  {
+    "id": 17,
+    "category": "Sorting & Searching",
+    "instruction": "Write a Python function that implements insertion sort and returns the sorted list.",
+    "input": "",
+    "expected_behavior": "Sorts by repeatedly inserting each element into its correct position among the already-sorted prefix.",
+    "unit_tests": [
+      {"description": "random list", "call": "fn([5,3,8,1])", "expected": "[1,3,5,8]"},
+      {"description": "reverse-sorted list", "call": "fn([4,3,2,1])", "expected": "[1,2,3,4]"},
+      {"description": "empty list", "call": "fn([])", "expected": "[]"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn([5,3,8,1]) == [1,3,5,8], f'Got {candidate_fn([5,3,8,1])}'\n    assert candidate_fn([4,3,2,1]) == [1,2,3,4], f'Got {candidate_fn([4,3,2,1])}'\n    assert candidate_fn([]) == [], f'Got {candidate_fn([])}'\n    assert candidate_fn([1]) == [1], f'Got {candidate_fn([1])}'\n"
+  },
+  {
+    "id": 18,
+    "category": "Sorting & Searching",
+    "instruction": "Write a Python function that performs interpolation search on a sorted list of integers and returns the index of the target or -1 if not found.",
+    "input": "",
+    "expected_behavior": "Uses the interpolation formula to estimate the target's position. Returns the index on success or -1 on failure.",
+    "unit_tests": [
+      {"description": "element found", "call": "fn([1,3,5,7,9,11], 7)", "expected": 3},
+      {"description": "element not found", "call": "fn([1,3,5,7,9], 6)", "expected": -1},
+      {"description": "empty list", "call": "fn([], 5)", "expected": -1}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    arr = [1,3,5,7,9,11]\n    result = candidate_fn(arr, 7)\n    assert result == 3, f'Expected index 3, got {result}'\n    result2 = candidate_fn(arr, 6)\n    assert result2 == -1, f'Expected -1, got {result2}'\n    assert candidate_fn([], 5) == -1, 'Expected -1 for empty list'\n"
+  },
+  {
+    "id": 19,
+    "category": "Sorting & Searching",
+    "instruction": "Write a Python function that counts the number of inversions in a list (pairs i < j where arr[i] > arr[j]) using a merge-sort based approach.",
+    "input": "",
+    "expected_behavior": "Returns the total inversion count as an integer.",
+    "unit_tests": [
+      {"description": "small unsorted list", "call": "fn([2,3,8,6,1])", "expected": 5},
+      {"description": "sorted list has zero inversions", "call": "fn([1,2,3,4])", "expected": 0},
+      {"description": "single element", "call": "fn([5])", "expected": 0}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn([2,3,8,6,1]) == 5, f'Got {candidate_fn([2,3,8,6,1])}'\n    assert candidate_fn([1,2,3,4]) == 0, f'Got {candidate_fn([1,2,3,4])}'\n    assert candidate_fn([5]) == 0, f'Got {candidate_fn([5])}'\n    assert candidate_fn([3,1,2]) == 2, f'Got {candidate_fn([3,1,2])}'\n"
+  },
+  {
+    "id": 20,
+    "category": "Sorting & Searching",
+    "instruction": "Write a Python function that performs a topological sort on a directed acyclic graph (DAG) given as an adjacency list (dict of node -> list of neighbors). Return a valid topological ordering.",
+    "input": "graph={'a':['b','c'],'b':['d'],'c':['d'],'d':[]}",
+    "expected_behavior": "Returns a list of nodes such that every directed edge u->v has u before v.",
+    "unit_tests": [
+      {"description": "linear chain", "call": "fn({'a':['b'],'b':['c'],'c':[]})", "expected": "['a','b','c']"},
+      {"description": "diamond DAG", "call": "result = fn({'a':['b','c'],'b':['d'],'c':['d'],'d':[]}); result.index('a') < result.index('d')", "expected": true},
+      {"description": "single node", "call": "fn({'x':[]})", "expected": "['x']"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    g1 = {'a':['b'],'b':['c'],'c':[]}\n    r1 = candidate_fn(g1)\n    assert r1.index('a') < r1.index('b') < r1.index('c'), f'Got {r1}'\n    g2 = {'a':['b','c'],'b':['d'],'c':['d'],'d':[]}\n    r2 = candidate_fn(g2)\n    assert r2.index('a') < r2.index('d'), f'Got {r2}'\n    assert r2.index('b') < r2.index('d'), f'Got {r2}'\n    r3 = candidate_fn({'x':[]})\n    assert r3 == ['x'], f'Got {r3}'\n"
+  },
+  {
+    "id": 21,
+    "category": "Recursion & Dynamic Programming",
+    "instruction": "Write a Python function that solves the coin change problem: given a list of coin denominations and a target amount, return the minimum number of coins needed to make the amount, or -1 if it is impossible.",
+    "input": "coins=[1,5,10,25], amount=30",
+    "expected_behavior": "Returns the minimum coin count, or -1 if the amount cannot be formed.",
+    "unit_tests": [
+      {"description": "standard case", "call": "fn([1,5,10,25], 30)", "expected": 2},
+      {"description": "impossible amount", "call": "fn([2], 3)", "expected": -1},
+      {"description": "zero amount", "call": "fn([1,5], 0)", "expected": 0}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn([1,5,10,25], 30) == 2, f'Got {candidate_fn([1,5,10,25], 30)}'\n    assert candidate_fn([2], 3) == -1, f'Got {candidate_fn([2], 3)}'\n    assert candidate_fn([1,5], 0) == 0, f'Got {candidate_fn([1,5], 0)}'\n    assert candidate_fn([1,2,5], 11) == 3, f'Got {candidate_fn([1,2,5], 11)}'\n"
+  },
+  {
+    "id": 22,
+    "category": "Recursion & Dynamic Programming",
+    "instruction": "Write a Python function that finds the length of the longest common subsequence (LCS) of two strings.",
+    "input": "",
+    "expected_behavior": "Returns the length of the longest subsequence present in both strings (not necessarily contiguous).",
+    "unit_tests": [
+      {"description": "standard LCS", "call": "fn('abcde', 'ace')", "expected": 3},
+      {"description": "no common chars", "call": "fn('abc', 'xyz')", "expected": 0},
+      {"description": "identical strings", "call": "fn('abc', 'abc')", "expected": 3}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn('abcde', 'ace') == 3, f'Got {candidate_fn(\"abcde\",\"ace\")}'\n    assert candidate_fn('abc', 'xyz') == 0, f'Got {candidate_fn(\"abc\",\"xyz\")}'\n    assert candidate_fn('abc', 'abc') == 3, f'Got {candidate_fn(\"abc\",\"abc\")}'\n    assert candidate_fn('', 'abc') == 0, f'Got {candidate_fn(\"\",\"abc\")}'\n"
+  },
+  {
+    "id": 23,
+    "category": "Recursion & Dynamic Programming",
+    "instruction": "Write a Python function to solve the 0/1 Knapsack problem. Given weights, values, and a capacity, return the maximum value that can be achieved without exceeding the weight limit.",
+    "input": "weights=[2,3,4,5], values=[3,4,5,6], capacity=8",
+    "expected_behavior": "Returns the maximum achievable value. Items cannot be split or reused.",
+    "unit_tests": [
+      {"description": "standard case", "call": "fn([2,3,4,5],[3,4,5,6],8)", "expected": 10},
+      {"description": "empty items", "call": "fn([],[],10)", "expected": 0},
+      {"description": "no capacity", "call": "fn([1,2],[3,4],0)", "expected": 0}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn([2,3,4,5],[3,4,5,6],8) == 10, f'Got {candidate_fn([2,3,4,5],[3,4,5,6],8)}'\n    assert candidate_fn([],[],10) == 0, f'Got {candidate_fn([],[],10)}'\n    assert candidate_fn([1,2],[3,4],0) == 0, f'Got {candidate_fn([1,2],[3,4],0)}'\n"
+  },
+  {
+    "id": 24,
+    "category": "Recursion & Dynamic Programming",
+    "instruction": "Write a Python function that generates the power set of a list (all possible subsets, including the empty set).",
+    "input": "",
+    "expected_behavior": "Returns a list of all subsets. Order of subsets and elements within subsets does not matter.",
+    "unit_tests": [
+      {"description": "three elements", "call": "len(fn([1,2,3]))", "expected": 8},
+      {"description": "empty list", "call": "fn([])", "expected": "[[]]"},
+      {"description": "single element", "call": "sorted([sorted(s) for s in fn([1])])", "expected": "[[], [1]]"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    ps = candidate_fn([1,2,3])\n    assert len(ps) == 8, f'Expected 8 subsets, got {len(ps)}'\n    ps_empty = candidate_fn([])\n    assert ps_empty == [[]] or ps_empty == [set()] or len(ps_empty) == 1, f'Got {ps_empty}'\n    ps_one = candidate_fn([1])\n    assert len(ps_one) == 2, f'Expected 2 subsets, got {len(ps_one)}'\n"
+  },
+  {
+    "id": 25,
+    "category": "Recursion & Dynamic Programming",
+    "instruction": "Write a Python function that prints (or returns) the sequence of moves to solve the Tower of Hanoi puzzle for n disks. Move disks from rod 'A' to rod 'C' using rod 'B'.",
+    "input": "n=3",
+    "expected_behavior": "Returns a list of move strings like 'Move disk 1 from A to C'. The number of moves should be 2^n - 1.",
+    "unit_tests": [
+      {"description": "1 disk", "call": "len(fn(1))", "expected": 1},
+      {"description": "3 disks total moves", "call": "len(fn(3))", "expected": 7},
+      {"description": "move list contains strings", "call": "isinstance(fn(2)[0], str)", "expected": true}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    moves1 = candidate_fn(1)\n    assert len(moves1) == 1, f'Expected 1 move, got {len(moves1)}'\n    moves3 = candidate_fn(3)\n    assert len(moves3) == 7, f'Expected 7 moves, got {len(moves3)}'\n    assert isinstance(moves3[0], str), f'Expected strings in list'\n"
+  },
+  {
+    "id": 26,
+    "category": "Recursion & Dynamic Programming",
+    "instruction": "Write a Python function that computes the nth Catalan number using dynamic programming.",
+    "input": "",
+    "expected_behavior": "Returns the nth Catalan number. C(0)=1, C(1)=1, C(2)=2, C(3)=5, C(4)=14.",
+    "unit_tests": [
+      {"description": "C(0)", "call": "fn(0)", "expected": 1},
+      {"description": "C(4)", "call": "fn(4)", "expected": 14},
+      {"description": "C(5)", "call": "fn(5)", "expected": 42}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn(0) == 1, f'Got {candidate_fn(0)}'\n    assert candidate_fn(1) == 1, f'Got {candidate_fn(1)}'\n    assert candidate_fn(4) == 14, f'Got {candidate_fn(4)}'\n    assert candidate_fn(5) == 42, f'Got {candidate_fn(5)}'\n"
+  },
+  {
+    "id": 27,
+    "category": "Recursion & Dynamic Programming",
+    "instruction": "Write a Python function that computes the minimum edit distance (Levenshtein distance) between two strings using dynamic programming (not recursion).",
+    "input": "",
+    "expected_behavior": "Returns an integer representing the minimum number of edits (insert, delete, substitute) to transform string s into string t.",
+    "unit_tests": [
+      {"description": "classic example", "call": "fn('horse', 'ros')", "expected": 3},
+      {"description": "empty source", "call": "fn('', 'abc')", "expected": 3},
+      {"description": "same strings", "call": "fn('abc', 'abc')", "expected": 0}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn('horse', 'ros') == 3, f'Got {candidate_fn(\"horse\",\"ros\")}'\n    assert candidate_fn('', 'abc') == 3, f'Got {candidate_fn(\"\",\"abc\")}'\n    assert candidate_fn('abc', 'abc') == 0, f'Got {candidate_fn(\"abc\",\"abc\")}'\n    assert candidate_fn('intention', 'execution') == 5, f'Got {candidate_fn(\"intention\",\"execution\")}'\n"
+  },
+  {
+    "id": 28,
+    "category": "Recursion & Dynamic Programming",
+    "instruction": "Write a Python function to solve the word break problem: given a string s and a list of dictionary words, return True if s can be segmented into a space-separated sequence of one or more dictionary words.",
+    "input": "s='leetcode', wordDict=['leet','code']",
+    "expected_behavior": "Returns True if the string can be fully decomposed into dictionary words, False otherwise.",
+    "unit_tests": [
+      {"description": "can break", "call": "fn('leetcode', ['leet','code'])", "expected": true},
+      {"description": "cannot break", "call": "fn('catsandog', ['cats','dog','sand','and','cat'])", "expected": false},
+      {"description": "empty string", "call": "fn('', ['a'])", "expected": true}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn('leetcode', ['leet','code']) is True, f'Got {candidate_fn(\"leetcode\",[\"leet\",\"code\"])}'\n    assert candidate_fn('catsandog', ['cats','dog','sand','and','cat']) is False, f'Got {candidate_fn(\"catsandog\",[\"cats\",\"dog\",\"sand\",\"and\",\"cat\"])}'\n    assert candidate_fn('', ['a']) is True, f'Got {candidate_fn(\"\", [\"a\"])}'\n"
+  },
+  {
+    "id": 29,
+    "category": "OOP & Class Definitions",
+    "instruction": "Write a Python class BankAccount with methods deposit, withdraw, and get_balance. Withdraw should raise a ValueError if the amount exceeds the balance.",
+    "input": "",
+    "expected_behavior": "Supports deposit, withdrawal with overdraft protection, and balance inquiry.",
+    "unit_tests": [
+      {"description": "deposit and balance", "call": "a=BankAccount(100); a.deposit(50); a.get_balance()", "expected": 150},
+      {"description": "withdraw succeeds", "call": "a=BankAccount(200); a.withdraw(75); a.get_balance()", "expected": 125},
+      {"description": "overdraft raises error", "call": "raises ValueError on withdraw > balance", "expected": "ValueError"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    acc = candidate_fn(100)\n    acc.deposit(50)\n    assert acc.get_balance() == 150, f'Expected 150, got {acc.get_balance()}'\n    acc.withdraw(30)\n    assert acc.get_balance() == 120, f'Expected 120, got {acc.get_balance()}'\n    try:\n        acc.withdraw(9999)\n        assert False, 'Expected ValueError'\n    except ValueError:\n        pass\n"
+  },
+  {
+    "id": 30,
+    "category": "OOP & Class Definitions",
+    "instruction": "Implement a singly linked list in Python as a class with methods append, prepend, delete_value, and to_list.",
+    "input": "",
+    "expected_behavior": "append adds to tail, prepend adds to head, delete_value removes first occurrence, to_list converts to Python list.",
+    "unit_tests": [
+      {"description": "append and to_list", "call": "ll.append(1); ll.append(2); ll.to_list()", "expected": "[1,2]"},
+      {"description": "prepend", "call": "ll.prepend(0); ll.to_list()", "expected": "[0,1,2]"},
+      {"description": "delete_value", "call": "ll.delete_value(1); ll.to_list()", "expected": "[0,2]"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    ll = candidate_fn()\n    ll.append(1)\n    ll.append(2)\n    assert ll.to_list() == [1, 2], f'Got {ll.to_list()}'\n    ll.prepend(0)\n    assert ll.to_list() == [0, 1, 2], f'Got {ll.to_list()}'\n    ll.delete_value(1)\n    assert ll.to_list() == [0, 2], f'Got {ll.to_list()}'\n"
+  },
+  {
+    "id": 31,
+    "category": "OOP & Class Definitions",
+    "instruction": "Implement a Stack class in Python backed by a list, with push, pop, peek, is_empty, and size methods.",
+    "input": "",
+    "expected_behavior": "LIFO structure. pop and peek raise IndexError on empty stack.",
+    "unit_tests": [
+      {"description": "push and peek", "call": "s.push(1); s.push(2); s.peek()", "expected": 2},
+      {"description": "pop returns correct order", "call": "s.push(1); s.push(2); s.pop()", "expected": 2},
+      {"description": "is_empty on empty stack", "call": "s.is_empty()", "expected": true}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    s = candidate_fn()\n    assert s.is_empty() is True, 'Expected empty'\n    s.push(1)\n    s.push(2)\n    assert s.peek() == 2, f'Expected 2, got {s.peek()}'\n    assert s.pop() == 2, f'Expected 2, got {s.pop()}'\n    assert s.size() == 1, f'Expected size 1, got {s.size()}'\n"
+  },
+  {
+    "id": 32,
+    "category": "OOP & Class Definitions",
+    "instruction": "Implement a Binary Search Tree (BST) class with insert and search methods. search should return True if the value exists and False otherwise.",
+    "input": "",
+    "expected_behavior": "Maintains BST property. Duplicate values can be handled by ignoring or inserting right.",
+    "unit_tests": [
+      {"description": "insert and search found", "call": "bst.insert(5); bst.insert(3); bst.search(3)", "expected": true},
+      {"description": "search not found", "call": "bst.search(99)", "expected": false},
+      {"description": "search root", "call": "bst.insert(10); bst.search(10)", "expected": true}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    bst = candidate_fn()\n    bst.insert(5)\n    bst.insert(3)\n    bst.insert(7)\n    assert bst.search(3) is True, f'Expected True'\n    assert bst.search(7) is True, f'Expected True'\n    assert bst.search(99) is False, f'Expected False'\n"
+  },
+  {
+    "id": 33,
+    "category": "OOP & Class Definitions",
+    "instruction": "Implement a Matrix class in Python that supports addition (+) and multiplication (*) of two matrices of compatible dimensions using operator overloading.",
+    "input": "",
+    "expected_behavior": "Matrix.__add__ adds element-wise; Matrix.__mul__ performs matrix multiplication. Raises ValueError on incompatible dimensions.",
+    "unit_tests": [
+      {"description": "matrix addition", "call": "Matrix([[1,2],[3,4]]) + Matrix([[5,6],[7,8]])", "expected": "Matrix([[6,8],[10,12]])"},
+      {"description": "matrix multiplication", "call": "Matrix([[1,2],[3,4]]) * Matrix([[5,6],[7,8]])", "expected": "Matrix([[19,22],[43,50]])"},
+      {"description": "dimension mismatch raises ValueError", "call": "raises ValueError", "expected": "ValueError"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    M = candidate_fn\n    a = M([[1,2],[3,4]])\n    b = M([[5,6],[7,8]])\n    c = a + b\n    assert c.data == [[6,8],[10,12]] or (hasattr(c,'rows') and c.rows == [[6,8],[10,12]]), f'Add failed: {c}'\n    d = a * b\n    result_data = d.data if hasattr(d,'data') else d.rows\n    assert result_data == [[19,22],[43,50]], f'Mul failed: {result_data}'\n"
+  },
+  {
+    "id": 34,
+    "category": "OOP & Class Definitions",
+    "instruction": "Implement a Python class Counter that acts as an iterator, yielding integers from start to stop (exclusive) with a given step.",
+    "input": "start=0, stop=10, step=2",
+    "expected_behavior": "Implements __iter__ and __next__. Raises StopIteration when the sequence is exhausted.",
+    "unit_tests": [
+      {"description": "basic iteration", "call": "list(Counter(0,6,2))", "expected": "[0,2,4]"},
+      {"description": "single step", "call": "list(Counter(1,4,1))", "expected": "[1,2,3]"},
+      {"description": "empty range", "call": "list(Counter(5,5,1))", "expected": "[]"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    result = list(candidate_fn(0, 6, 2))\n    assert result == [0, 2, 4], f'Got {result}'\n    result2 = list(candidate_fn(1, 4, 1))\n    assert result2 == [1, 2, 3], f'Got {result2}'\n    result3 = list(candidate_fn(5, 5, 1))\n    assert result3 == [], f'Got {result3}'\n"
+  },
+  {
+    "id": 35,
+    "category": "File I/O & Exception Handling",
+    "instruction": "Write a Python function that reads a JSON file and returns the parsed object. If the file does not exist, return an empty dict. If the JSON is malformed, return None.",
+    "input": "filepath='data.json'",
+    "expected_behavior": "Returns parsed dict/list on success, empty dict on missing file, None on JSON parse error.",
+    "unit_tests": [
+      {"description": "valid JSON file", "call": "returns parsed dict", "expected": "dict"},
+      {"description": "missing file returns empty dict", "call": "fn('nonexistent_xyz.json')", "expected": "{}"},
+      {"description": "malformed JSON returns None", "call": "fn with malformed file", "expected": "None"}
+    ],
+    "test_code": "\nimport json, tempfile, os\ndef run_test(candidate_fn):\n    # Test valid JSON\n    with tempfile.NamedTemporaryFile('w', delete=False, suffix='.json') as f:\n        json.dump({'key': 'value'}, f)\n        tmp = f.name\n    try:\n        result = candidate_fn(tmp)\n        assert result == {'key': 'value'}, f'Got {result}'\n    finally:\n        os.unlink(tmp)\n    # Test missing file\n    assert candidate_fn('nonexistent_xyz_abc.json') == {}, 'Expected empty dict'\n    # Test malformed JSON\n    with tempfile.NamedTemporaryFile('w', delete=False, suffix='.json') as f:\n        f.write('{bad json')\n        tmp2 = f.name\n    try:\n        assert candidate_fn(tmp2) is None, 'Expected None for malformed JSON'\n    finally:\n        os.unlink(tmp2)\n"
+  },
+  {
+    "id": 36,
+    "category": "File I/O & Exception Handling",
+    "instruction": "Write a Python function that writes a list of dictionaries to a CSV file with a given filename. The keys of the first dictionary are used as the header row.",
+    "input": "data=[{'name':'Alice','age':30},{'name':'Bob','age':25}], filename='out.csv'",
+    "expected_behavior": "Creates a valid CSV file with a header and one row per dict.",
+    "unit_tests": [
+      {"description": "creates valid CSV", "call": "file contents match expected", "expected": "name,age\\nAlice,30\\nBob,25"},
+      {"description": "empty list creates header-only file or empty file", "call": "fn([], 'empty.csv')", "expected": "no exception"},
+      {"description": "single dict writes one data row", "call": "single row count", "expected": 1}
+    ],
+    "test_code": "\nimport tempfile, os, csv\ndef run_test(candidate_fn):\n    data = [{'name': 'Alice', 'age': 30}, {'name': 'Bob', 'age': 25}]\n    with tempfile.NamedTemporaryFile('w', delete=False, suffix='.csv') as f:\n        tmp = f.name\n    try:\n        candidate_fn(data, tmp)\n        with open(tmp, newline='') as f:\n            reader = list(csv.DictReader(f))\n        assert len(reader) == 2, f'Expected 2 rows, got {len(reader)}'\n        assert reader[0]['name'] == 'Alice', f'Got {reader[0]}'\n    finally:\n        if os.path.exists(tmp):\n            os.unlink(tmp)\n"
+  },
+  {
+    "id": 37,
+    "category": "File I/O & Exception Handling",
+    "instruction": "Write a Python function that recursively lists all files in a directory and its subdirectories, returning a list of absolute paths.",
+    "input": "directory='.'",
+    "expected_behavior": "Returns a list of absolute path strings for every file (not directory) under the given root.",
+    "unit_tests": [
+      {"description": "finds files recursively", "call": "returns list of strings", "expected": "list"},
+      {"description": "returns absolute paths", "call": "all paths are absolute", "expected": true},
+      {"description": "empty directory returns empty list", "call": "fn(empty_dir)", "expected": "[]"}
+    ],
+    "test_code": "\nimport tempfile, os\ndef run_test(candidate_fn):\n    with tempfile.TemporaryDirectory() as tmpdir:\n        sub = os.path.join(tmpdir, 'sub')\n        os.makedirs(sub)\n        open(os.path.join(tmpdir, 'a.txt'), 'w').close()\n        open(os.path.join(sub, 'b.txt'), 'w').close()\n        result = candidate_fn(tmpdir)\n        assert len(result) == 2, f'Expected 2 files, got {len(result)}'\n        assert all(os.path.isabs(p) for p in result), 'Expected absolute paths'\n"
+  },
+  {
+    "id": 38,
+    "category": "File I/O & Exception Handling",
+    "instruction": "Write a Python context manager class that times a block of code and stores the elapsed time in seconds as an attribute.",
+    "input": "",
+    "expected_behavior": "Can be used with 'with' statement. After the block, the elapsed attribute contains the wall-clock time in seconds.",
+    "unit_tests": [
+      {"description": "elapsed is a float", "call": "with Timer() as t: pass; isinstance(t.elapsed, float)", "expected": true},
+      {"description": "elapsed >= 0", "call": "t.elapsed >= 0", "expected": true},
+      {"description": "elapsed roughly correct", "call": "sleep(0.05); 0.04 < t.elapsed < 1.0", "expected": true}
+    ],
+    "test_code": "\nimport time\ndef run_test(candidate_fn):\n    with candidate_fn() as t:\n        time.sleep(0.05)\n    assert hasattr(t, 'elapsed'), 'Expected elapsed attribute'\n    assert isinstance(t.elapsed, float), f'Expected float, got {type(t.elapsed)}'\n    assert t.elapsed >= 0.04, f'Expected >= 0.04s, got {t.elapsed}'\n"
+  },
+  {
+    "id": 39,
+    "category": "Algorithm Complexity & Edge Cases",
+    "instruction": "Write a Python function that returns the second largest unique element in a list. Return None if fewer than two unique elements exist.",
+    "input": "",
+    "expected_behavior": "Returns the second largest distinct value, or None if it does not exist.",
+    "unit_tests": [
+      {"description": "standard case", "call": "fn([1,2,3,4,5])", "expected": 4},
+      {"description": "duplicates of max", "call": "fn([5,5,4,3])", "expected": 4},
+      {"description": "all same elements", "call": "fn([3,3,3])", "expected": null}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn([1,2,3,4,5]) == 4, f'Got {candidate_fn([1,2,3,4,5])}'\n    assert candidate_fn([5,5,4,3]) == 4, f'Got {candidate_fn([5,5,4,3])}'\n    assert candidate_fn([3,3,3]) is None, f'Got {candidate_fn([3,3,3])}'\n    assert candidate_fn([]) is None, f'Got {candidate_fn([])}'\n    assert candidate_fn([1]) is None, f'Got {candidate_fn([1])}'\n"
+  },
+  {
+    "id": 40,
+    "category": "Algorithm Complexity & Edge Cases",
+    "instruction": "Write a Python function that takes a list of integers and returns the maximum product of any two distinct elements in the list.",
+    "input": "",
+    "expected_behavior": "Returns the maximum product achievable by multiplying exactly two distinct-index elements. Handles negative numbers and single-element lists.",
+    "unit_tests": [
+      {"description": "positive numbers", "call": "fn([1,2,3,4])", "expected": 12},
+      {"description": "negative numbers", "call": "fn([-10,-20,1,2])", "expected": 200},
+      {"description": "single element", "call": "fn([5])", "expected": null}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn([1,2,3,4]) == 12, f'Got {candidate_fn([1,2,3,4])}'\n    assert candidate_fn([-10,-20,1,2]) == 200, f'Got {candidate_fn([-10,-20,1,2])}'\n    r = candidate_fn([5])\n    assert r is None or r == 0, f'Single element should return None or 0, got {r}'\n"
+  },
+  {
+    "id": 41,
+    "category": "Algorithm Complexity & Edge Cases",
+    "instruction": "Write a Python function that computes the majority element of a list (an element that appears more than n/2 times using the Boyer-Moore voting algorithm). Return None if no majority element exists.",
+    "input": "",
+    "expected_behavior": "Returns the majority element or None. Must use O(n) time and O(1) space.",
+    "unit_tests": [
+      {"description": "majority exists", "call": "fn([3,3,4,2,4,4,2,4,4])", "expected": 4},
+      {"description": "no majority", "call": "fn([1,2,3,4])", "expected": null},
+      {"description": "single element", "call": "fn([7])", "expected": 7}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn([3,3,4,2,4,4,2,4,4]) == 4, f'Got {candidate_fn([3,3,4,2,4,4,2,4,4])}'\n    assert candidate_fn([1,2,3,4]) is None, f'Got {candidate_fn([1,2,3,4])}'\n    assert candidate_fn([7]) == 7, f'Got {candidate_fn([7])}'\n"
+  },
+  {
+    "id": 42,
+    "category": "Algorithm Complexity & Edge Cases",
+    "instruction": "Write a Python function that finds all duplicate elements in a list and returns them as a set.",
+    "input": "",
+    "expected_behavior": "Returns a set of elements that appear more than once. Empty set if no duplicates.",
+    "unit_tests": [
+      {"description": "has duplicates", "call": "fn([1,2,2,3,3,3])", "expected": "{2,3}"},
+      {"description": "no duplicates", "call": "fn([1,2,3])", "expected": "set()"},
+      {"description": "empty list", "call": "fn([])", "expected": "set()"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn([1,2,2,3,3,3]) == {2,3}, f'Got {candidate_fn([1,2,2,3,3,3])}'\n    assert candidate_fn([1,2,3]) == set(), f'Got {candidate_fn([1,2,3])}'\n    assert candidate_fn([]) == set(), f'Got {candidate_fn([])}'\n"
+  },
+  {
+    "id": 43,
+    "category": "Algorithm Complexity & Edge Cases",
+    "instruction": "Write a Python function that returns the subarray with the maximum sum (Kadane's algorithm). Return the sum as an integer.",
+    "input": "",
+    "expected_behavior": "Returns the maximum contiguous subarray sum. Handles all-negative arrays by returning the least-negative value.",
+    "unit_tests": [
+      {"description": "mixed positives and negatives", "call": "fn([-2,1,-3,4,-1,2,1,-5,4])", "expected": 6},
+      {"description": "all negative", "call": "fn([-1,-2,-3])", "expected": -1},
+      {"description": "single element", "call": "fn([5])", "expected": 5}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn([-2,1,-3,4,-1,2,1,-5,4]) == 6, f'Got {candidate_fn([-2,1,-3,4,-1,2,1,-5,4])}'\n    assert candidate_fn([-1,-2,-3]) == -1, f'Got {candidate_fn([-1,-2,-3])}'\n    assert candidate_fn([5]) == 5, f'Got {candidate_fn([5])}'\n"
+  },
+  {
+    "id": 44,
+    "category": "Algorithm Complexity & Edge Cases",
+    "instruction": "Write a Python function that determines if a given integer n is a prime number.",
+    "input": "",
+    "expected_behavior": "Returns True if n is prime (n > 1 and divisible only by 1 and itself). Handles edge cases: 0, 1, negative numbers.",
+    "unit_tests": [
+      {"description": "prime number", "call": "fn(17)", "expected": true},
+      {"description": "composite number", "call": "fn(15)", "expected": false},
+      {"description": "edge cases 0 and 1", "call": "fn(0) or fn(1)", "expected": false}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn(17) is True, f'Got {candidate_fn(17)}'\n    assert candidate_fn(15) is False, f'Got {candidate_fn(15)}'\n    assert candidate_fn(0) is False, f'Got {candidate_fn(0)}'\n    assert candidate_fn(1) is False, f'Got {candidate_fn(1)}'\n    assert candidate_fn(2) is True, f'Got {candidate_fn(2)}'\n    assert candidate_fn(-7) is False, f'Got {candidate_fn(-7)}'\n"
+  },
+  {
+    "id": 45,
+    "category": "Bug Fixing",
+    "instruction": "The following function is supposed to find the index of the first occurrence of target in a list using linear search, but it has an off-by-one error. Fix it:\n\ndef find_first(lst, target):\n    for i in range(1, len(lst)):\n        if lst[i] == target:\n            return i\n    return -1",
+    "input": "",
+    "expected_behavior": "Returns the index of the first occurrence, or -1 if not found. Index 0 must also be checked.",
+    "unit_tests": [
+      {"description": "target at index 0", "call": "fn([5,1,2], 5)", "expected": 0},
+      {"description": "target in middle", "call": "fn([1,2,3], 2)", "expected": 1},
+      {"description": "target not found", "call": "fn([1,2,3], 9)", "expected": -1}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn([5,1,2], 5) == 0, f'Got {candidate_fn([5,1,2], 5)}'\n    assert candidate_fn([1,2,3], 2) == 1, f'Got {candidate_fn([1,2,3], 2)}'\n    assert candidate_fn([1,2,3], 9) == -1, f'Got {candidate_fn([1,2,3], 9)}'\n"
+  },
+  {
+    "id": 46,
+    "category": "Bug Fixing",
+    "instruction": "The following function is supposed to compute the average of a list but uses the wrong comparison operator. Fix it:\n\ndef compute_average(lst):\n    if lst = []:\n        return 0.0\n    return sum(lst) / len(lst)",
+    "input": "",
+    "expected_behavior": "Returns the average of the list. Returns 0.0 for an empty list.",
+    "unit_tests": [
+      {"description": "normal list", "call": "fn([1,2,3,4,5])", "expected": 3.0},
+      {"description": "empty list", "call": "fn([])", "expected": 0.0},
+      {"description": "single element", "call": "fn([7])", "expected": 7.0}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn([1,2,3,4,5]) == 3.0, f'Got {candidate_fn([1,2,3,4,5])}'\n    assert candidate_fn([]) == 0.0, f'Got {candidate_fn([])}'\n    assert candidate_fn([7]) == 7.0, f'Got {candidate_fn([7])}'\n"
+  },
+  {
+    "id": 47,
+    "category": "Bug Fixing",
+    "instruction": "The following function has a mutable default argument bug. Fix it:\n\ndef append_to(element, to=[]):\n    to.append(element)\n    return to",
+    "input": "",
+    "expected_behavior": "Each call with no 'to' argument should return a fresh list containing only the element, not accumulating across calls.",
+    "unit_tests": [
+      {"description": "first call returns single element", "call": "fn(1)", "expected": "[1]"},
+      {"description": "second call is independent", "call": "fn(2)", "expected": "[2]"},
+      {"description": "explicit list is extended", "call": "fn(3, [10, 20])", "expected": "[10,20,3]"}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    r1 = candidate_fn(1)\n    r2 = candidate_fn(2)\n    assert r1 == [1], f'First call got {r1}'\n    assert r2 == [2], f'Second call got {r2}'\n    r3 = candidate_fn(3, [10, 20])\n    assert r3 == [10, 20, 3], f'Explicit list got {r3}'\n"
+  },
+  {
+    "id": 48,
+    "category": "Bug Fixing",
+    "instruction": "The following function is supposed to compute x raised to the power n recursively, but has a wrong base case. Fix it:\n\ndef power(x, n):\n    if n == 1:\n        return x\n    return x * power(x, n - 1)",
+    "input": "",
+    "expected_behavior": "Returns x^n. Must handle n=0 correctly (any x^0 == 1).",
+    "unit_tests": [
+      {"description": "power of zero exponent", "call": "fn(5, 0)", "expected": 1},
+      {"description": "normal power", "call": "fn(2, 10)", "expected": 1024},
+      {"description": "x=1 any power", "call": "fn(1, 100)", "expected": 1}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn(5, 0) == 1, f'Got {candidate_fn(5, 0)}'\n    assert candidate_fn(2, 10) == 1024, f'Got {candidate_fn(2, 10)}'\n    assert candidate_fn(1, 100) == 1, f'Got {candidate_fn(1, 100)}'\n    assert candidate_fn(3, 3) == 27, f'Got {candidate_fn(3, 3)}'\n"
+  },
+  {
+    "id": 49,
+    "category": "Bug Fixing",
+    "instruction": "The following function is supposed to count words in a string but incorrectly handles multiple consecutive spaces. Fix it:\n\ndef count_words(s):\n    return len(s.split(' '))",
+    "input": "",
+    "expected_behavior": "Returns the number of words, correctly handling multiple spaces, tabs, and leading/trailing whitespace.",
+    "unit_tests": [
+      {"description": "normal sentence", "call": "fn('hello world')", "expected": 2},
+      {"description": "multiple spaces", "call": "fn('a  b   c')", "expected": 3},
+      {"description": "empty string", "call": "fn('')", "expected": 0}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn('hello world') == 2, f'Got {candidate_fn(\"hello world\")}'\n    assert candidate_fn('a  b   c') == 3, f'Got {candidate_fn(\"a  b   c\")}'\n    assert candidate_fn('') == 0, f'Got {candidate_fn(\"\")}'\n    assert candidate_fn('  leading') == 1, f'Got {candidate_fn(\"  leading\")}'\n"
+  },
+  {
+    "id": 50,
+    "category": "Bug Fixing",
+    "instruction": "The following function is supposed to return the nth element from the end of a list (1-indexed), but has an incorrect index. Fix it:\n\ndef nth_from_end(lst, n):\n    return lst[len(lst) - n + 1]",
+    "input": "",
+    "expected_behavior": "Returns the nth element from the end (n=1 returns the last element, n=2 returns the second-to-last, etc.).",
+    "unit_tests": [
+      {"description": "last element (n=1)", "call": "fn([1,2,3,4,5], 1)", "expected": 5},
+      {"description": "second from last (n=2)", "call": "fn([1,2,3,4,5], 2)", "expected": 4},
+      {"description": "first from end equals full length", "call": "fn([10], 1)", "expected": 10}
+    ],
+    "test_code": "\ndef run_test(candidate_fn):\n    assert candidate_fn([1,2,3,4,5], 1) == 5, f'Got {candidate_fn([1,2,3,4,5], 1)}'\n    assert candidate_fn([1,2,3,4,5], 2) == 4, f'Got {candidate_fn([1,2,3,4,5], 2)}'\n    assert candidate_fn([10], 1) == 10, f'Got {candidate_fn([10], 1)}'\n    assert candidate_fn([1,2,3,4,5], 5) == 1, f'Got {candidate_fn([1,2,3,4,5], 5)}'\n"
+  }
+]

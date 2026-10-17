@@ -1,0 +1,8 @@
+{
+  "timestamp_utc": "2026-09-20T13:51:09.564897",
+  "benchmark_task_count": 50,
+  "train_samples_checked": 1800,
+  "exact_or_substantial_overlaps": 0,
+  "is_strictly_ood": true,
+  "overlaps": []
+}

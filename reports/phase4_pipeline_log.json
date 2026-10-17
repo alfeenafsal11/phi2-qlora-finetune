@@ -1,0 +1,182 @@
+[
+  {
+    "timestamp_utc": "2026-09-21T08:59:26.309522",
+    "level": "START",
+    "message": "Phase 4 Section 1: Data category audit"
+  },
+  {
+    "timestamp_utc": "2026-09-21T08:59:26.309522",
+    "level": "REUSE",
+    "message": "SOURCE=reports/phase3_master_eval_results.json | All 6 Phase 3 model evaluation results reused without recomputation per CRITICAL RULE"
+  },
+  {
+    "timestamp_utc": "2026-09-21T08:59:26.309522",
+    "level": "REUSE",
+    "message": "SOURCE=reports/phase3_checkpoint_curves.json | Config A/B/C checkpoint curves reused without recomputation per CRITICAL RULE"
+  },
+  {
+    "timestamp_utc": "2026-09-21T08:59:26.309522",
+    "level": "REUSE",
+    "message": "SOURCE=reports/phase3_masking_ablation_timing.json | Masking timing closed per Locked Decision #1 \u2014 reused without recomputation"
+  },
+  {
+    "timestamp_utc": "2026-09-21T08:59:26.309522",
+    "level": "REUSE",
+    "message": "SOURCE=reports/phase3_vram_log.json | Phase 3 VRAM logs for configs A-D reused without recomputation per CRITICAL RULE"
+  },
+  {
+    "timestamp_utc": "2026-09-21T08:59:26.309522",
+    "level": "REUSE",
+    "message": "SOURCE=reports/phase3_benchmark_50tasks.json | 50-task OOD-verified benchmark reused without regeneration per CRITICAL RULE"
+  },
+  {
+    "timestamp_utc": "2026-09-21T08:59:26.309522",
+    "level": "START",
+    "message": "Loading full 18k dataset"
+  },
+  {
+    "timestamp_utc": "2026-09-21T08:59:26.725270",
+    "level": "INFO",
+    "message": "Dataset loaded: 18612 samples"
+  },
+  {
+    "timestamp_utc": "2026-09-21T08:59:26.725270",
+    "level": "START",
+    "message": "Classifying full 18k dataset"
+  },
+  {
+    "timestamp_utc": "2026-09-21T08:59:35.068382",
+    "level": "START",
+    "message": "Classifying train[:2000] slice"
+  },
+  {
+    "timestamp_utc": "2026-09-21T08:59:35.943380",
+    "level": "START",
+    "message": "Classifying train[:5000] slice"
+  },
+  {
+    "timestamp_utc": "2026-09-21T08:59:38.100851",
+    "level": "DONE",
+    "message": "Category audit done. Decision: plain_sequential"
+  },
+  {
+    "timestamp_utc": "2026-09-21T09:00:08.415253",
+    "level": "START",
+    "message": "Phase 4 Pipeline started at 2026-09-21T09:00:08.415253"
+  },
+  {
+    "timestamp_utc": "2026-09-21T09:00:08.418970",
+    "level": "INFO",
+    "message": "Sampling decision: plain_sequential (File I/O < 300 threshold)"
+  },
+  {
+    "timestamp_utc": "2026-09-21T09:00:08.435543",
+    "level": "START",
+    "message": "Section 2: Config E training"
+  },
+  {
+    "timestamp_utc": "2026-09-21T09:00:34.250393",
+    "level": "START",
+    "message": "Phase 4 Config E training starting"
+  },
+  {
+    "timestamp_utc": "2026-09-21T09:00:50.855944",
+    "level": "INFO",
+    "message": "Dataset split: 4500 train / 500 eval | balanced=False"
+  },
+  {
+    "timestamp_utc": "2026-09-21T09:00:50.877928",
+    "level": "INFO",
+    "message": "Expected training steps: ~1124 (562/epoch \u00d7 2 epochs)"
+  },
+  {
+    "timestamp_utc": "2026-09-21T11:41:36.525423",
+    "level": "DONE",
+    "message": "Config E training complete: 9644s (2.68h), steps=1124"
+  },
+  {
+    "timestamp_utc": "2026-09-21T11:41:39.136999",
+    "level": "DONE",
+    "message": "Section 2: Config E training completed in 9691s (2.69h)"
+  },
+  {
+    "timestamp_utc": "2026-09-21T11:41:39.146378",
+    "level": "START",
+    "message": "Section 3A: Config E checkpoint curve greedy eval"
+  },
+  {
+    "timestamp_utc": "2026-09-21T11:42:02.984350",
+    "level": "REUSE",
+    "message": "SOURCE=reports/phase3_benchmark_50tasks.json | 50-task benchmark reused without regeneration per CRITICAL RULE"
+  },
+  {
+    "timestamp_utc": "2026-09-21T11:42:02.986364",
+    "level": "REUSE",
+    "message": "SOURCE=reports/phase3_master_eval_results.json | All 6 Phase 3 model eval results reused \u2014 raw_phi2, phase2_corrected, config_a, config_b, config_c, config_d not re-evaluated per CRITICAL RULE"
+  },
+  {
+    "timestamp_utc": "2026-09-21T11:42:03.019304",
+    "level": "START",
+    "message": "Phase A: Config E checkpoint curve (greedy only)"
+  },
+  {
+    "timestamp_utc": "2026-09-21T15:28:27.698679",
+    "level": "DONE",
+    "message": "Phase A complete. Best checkpoint: step 100 at 68.0%"
+  },
+  {
+    "timestamp_utc": "2026-09-21T15:28:29.474438",
+    "level": "DONE",
+    "message": "Section 3A: Config E checkpoint curve greedy eval completed in 13610s (3.78h)"
+  },
+  {
+    "timestamp_utc": "2026-09-21T15:28:29.481201",
+    "level": "START",
+    "message": "Section 3B: Config E full eval (best checkpoint only)"
+  },
+  {
+    "timestamp_utc": "2026-09-21T15:28:42.147633",
+    "level": "REUSE",
+    "message": "SOURCE=reports/phase3_benchmark_50tasks.json | 50-task benchmark reused without regeneration per CRITICAL RULE"
+  },
+  {
+    "timestamp_utc": "2026-09-21T15:28:42.149649",
+    "level": "REUSE",
+    "message": "SOURCE=reports/phase3_master_eval_results.json | All 6 Phase 3 model eval results reused \u2014 raw_phi2, phase2_corrected, config_a, config_b, config_c, config_d not re-evaluated per CRITICAL RULE"
+  },
+  {
+    "timestamp_utc": "2026-09-21T15:28:42.170813",
+    "level": "START",
+    "message": "Phase B: Full eval on best checkpoint step=100 at phi2-qlora-phase4-scaled-5k\\checkpoint-100"
+  },
+  {
+    "timestamp_utc": "2026-09-21T16:46:17.308495",
+    "level": "DONE",
+    "message": "Phase B complete. Config E pass rate: 68.0%"
+  },
+  {
+    "timestamp_utc": "2026-09-21T16:46:17.388955",
+    "level": "DONE",
+    "message": "Phase 4 evaluation complete. Master results saved."
+  },
+  {
+    "timestamp_utc": "2026-09-21T16:46:19.570961",
+    "level": "DONE",
+    "message": "Section 3B: Config E full eval (best checkpoint only) completed in 4670s (1.30h)"
+  },
+  {
+    "timestamp_utc": "2026-09-21T16:46:19.578493",
+    "level": "START",
+    "message": "Section 4: Phase 4 report generation"
+  },
+  {
+    "timestamp_utc": "2026-09-21T16:46:19.933445",
+    "level": "DONE",
+    "message": "Section 4: Phase 4 report generation completed in 0s (0.00h)"
+  },
+  {
+    "timestamp_utc": "2026-09-21T16:46:19.936512",
+    "level": "DONE",
+    "message": "Phase 4 Pipeline complete. Total time: 27972s (7.77h)"
+  }
+]

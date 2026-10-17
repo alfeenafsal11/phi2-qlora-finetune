@@ -66,4 +66,21 @@ eval_report.md
 # Scratch / temp
 *.log
 *.tmp
+*.csv
 scratch/
+
+# Intermediate stage reports (Only final stage report phase4_project_report.md is tracked)
+reports/phase_1_project_report.md
+reports/phase_2_project_report.md
+reports/phase_2_loss_reconciliation.md
+reports/phase_2b_ablation_attribution_report.md
+reports/phase3_project_report.md
+reports/phase3_master_eval_results.json
+reports/phase3_checkpoint_curves.json
+reports/phase3_masking_ablation_timing.json
+reports/phase3_pipeline_log.json
+reports/phase3_vram_log.json
+reports/phase2b_attribution_eval_results.json
+reports/phase2b_data_pipeline_verification.json
+reports/eval_audit_full_results.json
+reports/eval_harness_regression_report.json

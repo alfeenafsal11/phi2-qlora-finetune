@@ -1,0 +1,235 @@
+{
+  "config_name": "config_c",
+  "config_description": "Config C: All Linear Layers (full MLP coverage)",
+  "target_modules": "q_proj,k_proj,v_proj,dense,fc1,fc2",
+  "masking_mode": "response_only",
+  "rank_requested": 16,
+  "rank_used": 16,
+  "oom_recovery_triggered": false,
+  "training_start_utc": "2026-09-18T14:09:05.164026",
+  "training_end_utc": "2026-09-18T14:45:05.844879",
+  "wall_clock_seconds": 2160.68,
+  "peak_vram_allocated_mb": 3341.13,
+  "peak_vram_reserved_mb": 3590.0,
+  "step_vram_log": [
+    {
+      "config": "config_c",
+      "step": 1,
+      "vram_allocated_mb": 2923.42,
+      "vram_reserved_mb": 3270.0,
+      "timestamp_utc": "2026-09-18T14:09:15.566993"
+    },
+    {
+      "config": "config_c",
+      "step": 50,
+      "vram_allocated_mb": 3341.13,
+      "vram_reserved_mb": 3590.0,
+      "timestamp_utc": "2026-09-18T14:15:26.912873"
+    },
+    {
+      "config": "config_c",
+      "step": 100,
+      "vram_allocated_mb": 3341.13,
+      "vram_reserved_mb": 3590.0,
+      "timestamp_utc": "2026-09-18T14:22:33.372245"
+    },
+    {
+      "config": "config_c",
+      "step": 150,
+      "vram_allocated_mb": 3341.13,
+      "vram_reserved_mb": 3590.0,
+      "timestamp_utc": "2026-09-18T14:29:47.623375"
+    },
+    {
+      "config": "config_c",
+      "step": 200,
+      "vram_allocated_mb": 3341.13,
+      "vram_reserved_mb": 3590.0,
+      "timestamp_utc": "2026-09-18T14:36:52.647980"
+    },
+    {
+      "config": "config_c",
+      "step": 250,
+      "vram_allocated_mb": 3341.13,
+      "vram_reserved_mb": 3590.0,
+      "timestamp_utc": "2026-09-18T14:44:03.925184"
+    }
+  ],
+  "train_loss": 0.44103461074829103,
+  "global_step": 250,
+  "final_eval_loss": 0.412036657333374,
+  "final_eval_step": 250,
+  "adapter_safetensors_sha256": "7b2badd9303bfc64cf74b555738f287f7741d53ee5bb04d2c4a106851e8a2e2b",
+  "adapter_safetensors_bytes": 94422368,
+  "metrics": {
+    "train_runtime": 2160.4272,
+    "train_samples_per_second": 0.926,
+    "train_steps_per_second": 0.116,
+    "total_flos": 5311824734668800.0,
+    "train_loss": 0.44103461074829103,
+    "epoch": 1.1111111111111112
+  },
+  "config": {
+    "config_name": "config_c",
+    "output_dir": "phi2-qlora-phase3-all-linear",
+    "target_modules": "q_proj,k_proj,v_proj,dense,fc1,fc2",
+    "masking_mode": "response_only",
+    "rank": 16,
+    "model_id": "microsoft/phi-2",
+    "dataset": "iamtarun/python_code_instructions_18k_alpaca",
+    "num_samples": 2000,
+    "eval_ratio": 0.1,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "max_steps": 250,
+    "learning_rate": 0.0002,
+    "scheduler": "cosine",
+    "optimizer": "adamw_torch",
+    "warmup_ratio": 0.03,
+    "batch_size": 1,
+    "grad_accum_steps": 8,
+    "max_seq_length": 512,
+    "logging_steps": 25,
+    "save_steps": 50,
+    "eval_steps": 50,
+    "seed": 42,
+    "vram_log_path": "reports/phase3_vram_log.json",
+    "timing_log_path": "reports/phase3_masking_ablation_timing.json",
+    "config_description": "Config C: All Linear Layers (full MLP coverage)"
+  },
+  "log_history": [
+    {
+      "loss": 0.5155,
+      "grad_norm": 0.6643509864807129,
+      "learning_rate": 0.00019785060106677818,
+      "epoch": 0.1111111111111111,
+      "step": 25
+    },
+    {
+      "loss": 0.4376,
+      "grad_norm": 0.6296709775924683,
+      "learning_rate": 0.0001861665762396974,
+      "epoch": 0.2222222222222222,
+      "step": 50
+    },
+    {
+      "eval_loss": 0.435634046792984,
+      "eval_runtime": 61.3062,
+      "eval_samples_per_second": 3.262,
+      "eval_steps_per_second": 3.262,
+      "epoch": 0.2222222222222222,
+      "step": 50
+    },
+    {
+      "loss": 0.4249,
+      "grad_norm": 0.5759567022323608,
+      "learning_rate": 0.00016548607339452853,
+      "epoch": 0.3333333333333333,
+      "step": 75
+    },
+    {
+      "loss": 0.442,
+      "grad_norm": 0.6237919330596924,
+      "learning_rate": 0.0001379683020225714,
+      "epoch": 0.4444444444444444,
+      "step": 100
+    },
+    {
+      "eval_loss": 0.42472952604293823,
+      "eval_runtime": 61.6429,
+      "eval_samples_per_second": 3.244,
+      "eval_steps_per_second": 3.244,
+      "epoch": 0.4444444444444444,
+      "step": 100
+    },
+    {
+      "loss": 0.4348,
+      "grad_norm": 0.7834430932998657,
+      "learning_rate": 0.0001064863369987743,
+      "epoch": 0.5555555555555556,
+      "step": 125
+    },
+    {
+      "loss": 0.4166,
+      "grad_norm": 0.5930718779563904,
+      "learning_rate": 7.432714664267373e-05,
+      "epoch": 0.6666666666666666,
+      "step": 150
+    },
+    {
+      "eval_loss": 0.4160919189453125,
+      "eval_runtime": 61.2945,
+      "eval_samples_per_second": 3.263,
+      "eval_steps_per_second": 3.263,
+      "epoch": 0.6666666666666666,
+      "step": 150
+    },
+    {
+      "loss": 0.4852,
+      "grad_norm": 0.4273102879524231,
+      "learning_rate": 4.593591825444028e-05,
+      "epoch": 0.7777777777777778,
+      "step": 175
+    },
+    {
+      "loss": 0.3879,
+      "grad_norm": 0.38939693570137024,
+      "learning_rate": 2.1932614882827197e-05,
+      "epoch": 0.8888888888888888,
+      "step": 200
+    },
+    {
+      "eval_loss": 0.41278672218322754,
+      "eval_runtime": 61.2223,
+      "eval_samples_per_second": 3.267,
+      "eval_steps_per_second": 3.267,
+      "epoch": 0.8888888888888888,
+      "step": 200
+    },
+    {
+      "loss": 0.4511,
+      "grad_norm": 0.5853977203369141,
+      "learning_rate": 6.08016935872251e-06,
+      "epoch": 1.0,
+      "step": 225
+    },
+    {
+      "loss": 0.4148,
+      "grad_norm": 0.475911408662796,
+      "learning_rate": 3.370346964876036e-08,
+      "epoch": 1.1111111111111112,
+      "step": 250
+    },
+    {
+      "eval_loss": 0.412036657333374,
+      "eval_runtime": 61.2157,
+      "eval_samples_per_second": 3.267,
+      "eval_steps_per_second": 3.267,
+      "epoch": 1.1111111111111112,
+      "step": 250
+    },
+    {
+      "train_runtime": 2160.4272,
+      "train_samples_per_second": 0.926,
+      "train_steps_per_second": 0.116,
+      "total_flos": 5311824734668800.0,
+      "train_loss": 0.44103461074829103,
+      "epoch": 1.1111111111111112,
+      "step": 250
+    }
+  ],
+  "environment": {
+    "python_version": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "torch_version": "2.5.1+cu121",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+    "gpu_total_vram_mb": 6140.5,
+    "transformers_version": "4.40.0",
+    "peft_version": "0.10.0",
+    "bitsandbytes_version": "0.43.1",
+    "datasets_version": "2.19.0",
+    "trl_version": "0.8.6",
+    "accelerate_version": "0.29.3"
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "timestamp_utc": "2026-09-21T08:59:38.098385",
+  "total_dataset_samples": 18612,
+  "oversampling_threshold": 300,
+  "mean_category_count_18k": 778.8,
+  "sampling_decision": "plain_sequential",
+  "sampling_rationale": "File I/O & Exception Handling has only 205 examples in full 18k (< 300 threshold). Use plain sequential sampling. File I/O improvement is DATASET-LEVEL CAPPED.",
+  "file_io_sufficient_for_oversampling": false,
+  "category_details": [
+    {
+      "category": "String Manipulation",
+      "count_full_18k": 2171,
+      "pct_full_18k": 11.66,
+      "count_train_2k": 241,
+      "pct_train_2k": 12.05,
+      "count_train_5k": 599,
+      "pct_train_5k": 11.98,
+      "sufficient_for_oversampling": true,
+      "below_mean_18k": false
+    },
+    {
+      "category": "Data Structures",
+      "count_full_18k": 1437,
+      "pct_full_18k": 7.72,
+      "count_train_2k": 166,
+      "pct_train_2k": 8.3,
+      "count_train_5k": 409,
+      "pct_train_5k": 8.18,
+      "sufficient_for_oversampling": true,
+      "below_mean_18k": false
+    },
+    {
+      "category": "Sorting & Searching",
+      "count_full_18k": 765,
+      "pct_full_18k": 4.11,
+      "count_train_2k": 74,
+      "pct_train_2k": 3.7,
+      "count_train_5k": 205,
+      "pct_train_5k": 4.1,
+      "sufficient_for_oversampling": true,
+      "below_mean_18k": true
+    },
+    {
+      "category": "Recursion & Dynamic Programming",
+      "count_full_18k": 469,
+      "pct_full_18k": 2.52,
+      "count_train_2k": 61,
+      "pct_train_2k": 3.05,
+      "count_train_5k": 143,
+      "pct_train_5k": 2.86,
+      "sufficient_for_oversampling": true,
+      "below_mean_18k": true
+    },
+    {
+      "category": "OOP & Class Definitions",
+      "count_full_18k": 1062,
+      "pct_full_18k": 5.71,
+      "count_train_2k": 99,
+      "pct_train_2k": 4.95,
+      "count_train_5k": 269,
+      "pct_train_5k": 5.38,
+      "sufficient_for_oversampling": true,
+      "below_mean_18k": false
+    },
+    {
+      "category": "File I/O & Exception Handling",
+      "count_full_18k": 205,
+      "pct_full_18k": 1.1,
+      "count_train_2k": 24,
+      "pct_train_2k": 1.2,
+      "count_train_5k": 54,
+      "pct_train_5k": 1.08,
+      "sufficient_for_oversampling": false,
+      "below_mean_18k": true
+    },
+    {
+      "category": "Algorithm Complexity & Edge Cases",
+      "count_full_18k": 43,
+      "pct_full_18k": 0.23,
+      "count_train_2k": 7,
+      "pct_train_2k": 0.35,
+      "count_train_5k": 16,
+      "pct_train_5k": 0.32,
+      "sufficient_for_oversampling": false,
+      "below_mean_18k": true
+    },
+    {
+      "category": "Bug Fixing",
+      "count_full_18k": 78,
+      "pct_full_18k": 0.42,
+      "count_train_2k": 9,
+      "pct_train_2k": 0.45,
+      "count_train_5k": 20,
+      "pct_train_5k": 0.4,
+      "sufficient_for_oversampling": false,
+      "below_mean_18k": true
+    },
+    {
+      "category": "Uncategorized",
+      "count_full_18k": 12382,
+      "pct_full_18k": 66.53,
+      "count_train_2k": 1319,
+      "pct_train_2k": 65.95,
+      "count_train_5k": 3285,
+      "pct_train_5k": 65.7,
+      "sufficient_for_oversampling": true,
+      "below_mean_18k": null
+    }
+  ],
+  "category_counts_full_18k": {
+    "String Manipulation": 2171,
+    "Data Structures": 1437,
+    "Sorting & Searching": 765,
+    "Recursion & Dynamic Programming": 469,
+    "OOP & Class Definitions": 1062,
+    "File I/O & Exception Handling": 205,
+    "Algorithm Complexity & Edge Cases": 43,
+    "Bug Fixing": 78,
+    "Uncategorized": 12382
+  },
+  "category_counts_train_2k": {
+    "String Manipulation": 241,
+    "Data Structures": 166,
+    "Sorting & Searching": 74,
+    "Recursion & Dynamic Programming": 61,
+    "OOP & Class Definitions": 99,
+    "File I/O & Exception Handling": 24,
+    "Algorithm Complexity & Edge Cases": 7,
+    "Bug Fixing": 9,
+    "Uncategorized": 1319
+  },
+  "category_counts_train_5k": {
+    "String Manipulation": 599,
+    "Data Structures": 409,
+    "Sorting & Searching": 205,
+    "Recursion & Dynamic Programming": 143,
+    "OOP & Class Definitions": 269,
+    "File I/O & Exception Handling": 54,
+    "Algorithm Complexity & Edge Cases": 16,
+    "Bug Fixing": 20,
+    "Uncategorized": 3285
+  }
+}

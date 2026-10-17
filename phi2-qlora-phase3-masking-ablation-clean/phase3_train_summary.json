@@ -1,0 +1,235 @@
+{
+  "config_name": "config_d",
+  "config_description": "Config D: Masking Ablation (clean re-run, full-sequence loss)",
+  "target_modules": "q_proj,v_proj",
+  "masking_mode": "full_sequence",
+  "rank_requested": 16,
+  "rank_used": 16,
+  "oom_recovery_triggered": false,
+  "training_start_utc": "2026-09-18T14:45:22.776836",
+  "training_end_utc": "2026-09-18T15:14:29.046950",
+  "wall_clock_seconds": 1746.27,
+  "peak_vram_allocated_mb": 3061.13,
+  "peak_vram_reserved_mb": 3234.0,
+  "step_vram_log": [
+    {
+      "config": "config_d",
+      "step": 1,
+      "vram_allocated_mb": 2783.42,
+      "vram_reserved_mb": 2890.0,
+      "timestamp_utc": "2026-09-18T14:45:28.988290"
+    },
+    {
+      "config": "config_d",
+      "step": 50,
+      "vram_allocated_mb": 3061.13,
+      "vram_reserved_mb": 3232.0,
+      "timestamp_utc": "2026-09-18T14:50:15.175286"
+    },
+    {
+      "config": "config_d",
+      "step": 100,
+      "vram_allocated_mb": 3061.13,
+      "vram_reserved_mb": 3234.0,
+      "timestamp_utc": "2026-09-18T14:56:02.382165"
+    },
+    {
+      "config": "config_d",
+      "step": 150,
+      "vram_allocated_mb": 3061.13,
+      "vram_reserved_mb": 3234.0,
+      "timestamp_utc": "2026-09-18T15:01:52.657456"
+    },
+    {
+      "config": "config_d",
+      "step": 200,
+      "vram_allocated_mb": 3061.13,
+      "vram_reserved_mb": 3234.0,
+      "timestamp_utc": "2026-09-18T15:07:37.300740"
+    },
+    {
+      "config": "config_d",
+      "step": 250,
+      "vram_allocated_mb": 3061.13,
+      "vram_reserved_mb": 3234.0,
+      "timestamp_utc": "2026-09-18T15:13:31.181390"
+    }
+  ],
+  "train_loss": 0.6636900787353516,
+  "global_step": 250,
+  "final_eval_loss": 0.6353691220283508,
+  "final_eval_step": 250,
+  "adapter_safetensors_sha256": "159dbcba6438f5cdad708ae78454aadee3bbaf715048d02aac655e26f2f364f5",
+  "adapter_safetensors_bytes": 20988664,
+  "metrics": {
+    "train_runtime": 1746.1009,
+    "train_samples_per_second": 1.145,
+    "train_steps_per_second": 0.143,
+    "total_flos": 5275348335544320.0,
+    "train_loss": 0.6636900787353516,
+    "epoch": 1.1111111111111112
+  },
+  "config": {
+    "config_name": "config_d",
+    "output_dir": "phi2-qlora-phase3-masking-ablation-clean",
+    "target_modules": "q_proj,v_proj",
+    "masking_mode": "full_sequence",
+    "rank": 16,
+    "model_id": "microsoft/phi-2",
+    "dataset": "iamtarun/python_code_instructions_18k_alpaca",
+    "num_samples": 2000,
+    "eval_ratio": 0.1,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "max_steps": 250,
+    "learning_rate": 0.0002,
+    "scheduler": "cosine",
+    "optimizer": "adamw_torch",
+    "warmup_ratio": 0.03,
+    "batch_size": 1,
+    "grad_accum_steps": 8,
+    "max_seq_length": 512,
+    "logging_steps": 25,
+    "save_steps": 50,
+    "eval_steps": 50,
+    "seed": 42,
+    "vram_log_path": "reports/phase3_vram_log.json",
+    "timing_log_path": "reports/phase3_masking_ablation_timing.json",
+    "config_description": "Config D: Masking Ablation (clean re-run, full-sequence loss)"
+  },
+  "log_history": [
+    {
+      "loss": 0.9075,
+      "grad_norm": 0.5848201513290405,
+      "learning_rate": 0.0001975746552556772,
+      "epoch": 0.1111111111111111,
+      "step": 25
+    },
+    {
+      "loss": 0.6709,
+      "grad_norm": 0.3445316255092621,
+      "learning_rate": 0.00018550053929480202,
+      "epoch": 0.2222222222222222,
+      "step": 50
+    },
+    {
+      "eval_loss": 0.6610278487205505,
+      "eval_runtime": 57.6521,
+      "eval_samples_per_second": 3.469,
+      "eval_steps_per_second": 3.469,
+      "epoch": 0.2222222222222222,
+      "step": 50
+    },
+    {
+      "loss": 0.6406,
+      "grad_norm": 0.40358513593673706,
+      "learning_rate": 0.00016449948488669639,
+      "epoch": 0.3333333333333333,
+      "step": 75
+    },
+    {
+      "loss": 0.6387,
+      "grad_norm": 0.3490968644618988,
+      "learning_rate": 0.000136764169663272,
+      "epoch": 0.4444444444444444,
+      "step": 100
+    },
+    {
+      "eval_loss": 0.6426305174827576,
+      "eval_runtime": 57.6129,
+      "eval_samples_per_second": 3.471,
+      "eval_steps_per_second": 3.471,
+      "epoch": 0.4444444444444444,
+      "step": 100
+    },
+    {
+      "loss": 0.6246,
+      "grad_norm": 0.3790270686149597,
+      "learning_rate": 0.00010519038181318999,
+      "epoch": 0.5555555555555556,
+      "step": 125
+    },
+    {
+      "loss": 0.6269,
+      "grad_norm": 0.38652241230010986,
+      "learning_rate": 7.307467669163655e-05,
+      "epoch": 0.6666666666666666,
+      "step": 150
+    },
+    {
+      "eval_loss": 0.6387858390808105,
+      "eval_runtime": 57.5281,
+      "eval_samples_per_second": 3.477,
+      "eval_steps_per_second": 3.477,
+      "epoch": 0.6666666666666666,
+      "step": 150
+    },
+    {
+      "loss": 0.666,
+      "grad_norm": 0.3183199465274811,
+      "learning_rate": 4.377019014049223e-05,
+      "epoch": 0.7777777777777778,
+      "step": 175
+    },
+    {
+      "loss": 0.5929,
+      "grad_norm": 0.3265642523765564,
+      "learning_rate": 2.03365443542764e-05,
+      "epoch": 0.8888888888888888,
+      "step": 200
+    },
+    {
+      "eval_loss": 0.6357729434967041,
+      "eval_runtime": 57.5298,
+      "eval_samples_per_second": 3.476,
+      "eval_steps_per_second": 3.476,
+      "epoch": 0.8888888888888888,
+      "step": 200
+    },
+    {
+      "loss": 0.6403,
+      "grad_norm": 0.6570000052452087,
+      "learning_rate": 5.22039891260262e-06,
+      "epoch": 1.0,
+      "step": 225
+    },
+    {
+      "loss": 0.6286,
+      "grad_norm": 0.33687350153923035,
+      "learning_rate": 0.0,
+      "epoch": 1.1111111111111112,
+      "step": 250
+    },
+    {
+      "eval_loss": 0.6353691220283508,
+      "eval_runtime": 57.5678,
+      "eval_samples_per_second": 3.474,
+      "eval_steps_per_second": 3.474,
+      "epoch": 1.1111111111111112,
+      "step": 250
+    },
+    {
+      "train_runtime": 1746.1009,
+      "train_samples_per_second": 1.145,
+      "train_steps_per_second": 0.143,
+      "total_flos": 5275348335544320.0,
+      "train_loss": 0.6636900787353516,
+      "epoch": 1.1111111111111112,
+      "step": 250
+    }
+  ],
+  "environment": {
+    "python_version": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "torch_version": "2.5.1+cu121",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+    "gpu_total_vram_mb": 6140.5,
+    "transformers_version": "4.40.0",
+    "peft_version": "0.10.0",
+    "bitsandbytes_version": "0.43.1",
+    "datasets_version": "2.19.0",
+    "trl_version": "0.8.6",
+    "accelerate_version": "0.29.3"
+  }
+}

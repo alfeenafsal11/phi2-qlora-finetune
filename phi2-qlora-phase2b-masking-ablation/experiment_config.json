@@ -1,0 +1,42 @@
+{
+  "config": {
+    "ablation_name": "masking_ablation",
+    "output_dir": "./phi2-qlora-phase2b-masking-ablation",
+    "input_mode": "with_input",
+    "eos_mode": "with_eos",
+    "masking_mode": "full_sequence",
+    "model_id": "microsoft/phi-2",
+    "dataset": "iamtarun/python_code_instructions_18k_alpaca",
+    "num_samples": 2000,
+    "eval_ratio": 0.1,
+    "rank": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": "q_proj,v_proj",
+    "epochs": 2,
+    "learning_rate": 0.0002,
+    "scheduler": "cosine",
+    "optimizer": "adamw_torch",
+    "warmup_ratio": 0.03,
+    "batch_size": 1,
+    "grad_accum_steps": 8,
+    "max_seq_length": 512,
+    "logging_steps": 25,
+    "save_steps": 200,
+    "eval_steps": 100,
+    "seed": 42
+  },
+  "environment": {
+    "python_version": "3.11.6 (tags/v3.11.6:8b6ee5b, Oct  2 2023, 14:57:12) [MSC v.1935 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "torch_version": "2.5.1+cu121",
+    "cuda_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+    "transformers_version": "4.40.0",
+    "peft_version": "0.10.0",
+    "bitsandbytes_version": "0.43.1",
+    "datasets_version": "2.19.0",
+    "trl_version": "0.8.6",
+    "accelerate_version": "0.29.3"
+  }
+}

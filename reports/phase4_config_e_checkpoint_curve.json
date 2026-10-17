@@ -1,0 +1,101 @@
+[
+  {
+    "step": 100,
+    "checkpoint_path": "phi2-qlora-phase4-scaled-5k\\checkpoint-100",
+    "core_functional_pass_rate": 0.68,
+    "syntax_validity_rate": 0.96,
+    "eos_termination_rate": 0.96,
+    "max_token_cutoff_rate": 0.04,
+    "mean_gen_length_tokens": 115.38
+  },
+  {
+    "step": 200,
+    "checkpoint_path": "phi2-qlora-phase4-scaled-5k\\checkpoint-200",
+    "core_functional_pass_rate": 0.64,
+    "syntax_validity_rate": 0.96,
+    "eos_termination_rate": 0.94,
+    "max_token_cutoff_rate": 0.06,
+    "mean_gen_length_tokens": 121.64
+  },
+  {
+    "step": 300,
+    "checkpoint_path": "phi2-qlora-phase4-scaled-5k\\checkpoint-300",
+    "core_functional_pass_rate": 0.66,
+    "syntax_validity_rate": 0.94,
+    "eos_termination_rate": 0.88,
+    "max_token_cutoff_rate": 0.12,
+    "mean_gen_length_tokens": 125.58
+  },
+  {
+    "step": 400,
+    "checkpoint_path": "phi2-qlora-phase4-scaled-5k\\checkpoint-400",
+    "core_functional_pass_rate": 0.62,
+    "syntax_validity_rate": 0.98,
+    "eos_termination_rate": 0.94,
+    "max_token_cutoff_rate": 0.06,
+    "mean_gen_length_tokens": 116.34
+  },
+  {
+    "step": 500,
+    "checkpoint_path": "phi2-qlora-phase4-scaled-5k\\checkpoint-500",
+    "core_functional_pass_rate": 0.62,
+    "syntax_validity_rate": 1.0,
+    "eos_termination_rate": 0.96,
+    "max_token_cutoff_rate": 0.04,
+    "mean_gen_length_tokens": 113.94
+  },
+  {
+    "step": 600,
+    "checkpoint_path": "phi2-qlora-phase4-scaled-5k\\checkpoint-600",
+    "core_functional_pass_rate": 0.6,
+    "syntax_validity_rate": 0.98,
+    "eos_termination_rate": 0.96,
+    "max_token_cutoff_rate": 0.06,
+    "mean_gen_length_tokens": 115.32
+  },
+  {
+    "step": 700,
+    "checkpoint_path": "phi2-qlora-phase4-scaled-5k\\checkpoint-700",
+    "core_functional_pass_rate": 0.6,
+    "syntax_validity_rate": 0.96,
+    "eos_termination_rate": 0.96,
+    "max_token_cutoff_rate": 0.04,
+    "mean_gen_length_tokens": 114.76
+  },
+  {
+    "step": 800,
+    "checkpoint_path": "phi2-qlora-phase4-scaled-5k\\checkpoint-800",
+    "core_functional_pass_rate": 0.64,
+    "syntax_validity_rate": 0.98,
+    "eos_termination_rate": 0.96,
+    "max_token_cutoff_rate": 0.04,
+    "mean_gen_length_tokens": 114.84
+  },
+  {
+    "step": 900,
+    "checkpoint_path": "phi2-qlora-phase4-scaled-5k\\checkpoint-900",
+    "core_functional_pass_rate": 0.56,
+    "syntax_validity_rate": 0.96,
+    "eos_termination_rate": 0.96,
+    "max_token_cutoff_rate": 0.04,
+    "mean_gen_length_tokens": 115.02
+  },
+  {
+    "step": 1000,
+    "checkpoint_path": "phi2-qlora-phase4-scaled-5k\\checkpoint-1000",
+    "core_functional_pass_rate": 0.6,
+    "syntax_validity_rate": 0.98,
+    "eos_termination_rate": 0.96,
+    "max_token_cutoff_rate": 0.04,
+    "mean_gen_length_tokens": 115.18
+  },
+  {
+    "step": 1100,
+    "checkpoint_path": "phi2-qlora-phase4-scaled-5k\\checkpoint-1100",
+    "core_functional_pass_rate": 0.56,
+    "syntax_validity_rate": 0.98,
+    "eos_termination_rate": 0.94,
+    "max_token_cutoff_rate": 0.06,
+    "mean_gen_length_tokens": 115.48
+  }
+]
