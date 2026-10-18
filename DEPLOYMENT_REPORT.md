@@ -6,6 +6,7 @@
 **Base Model**: `microsoft/phi-2` (2.78B parameters, frozen)  
 **Selected Checkpoint**: Config E, Step 100 (`phi2-qlora-phase4-scaled-5k/checkpoint-100/`)  
 **Base Commit SHA**: `e2fd775199fabb6012a22b44597e91937f684dd7`  
+**Deployment Commit SHA**: `72f1b810a4dc0c360012f73f15b992bed6f15864`  
 
 ---
 
