@@ -4,6 +4,16 @@
 > Fine-tune Microsoft's Phi-2 (2.7B) using **QLoRA** — 4-bit NF4 quantization + Low-Rank Adapters —  
 > updating only **0.19% of model parameters** while maintaining high functional code-generation capability.
 
+[![Hugging Face Space](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/alfeenafsal/phi2-qlora-comparison)
+[![Hugging Face Model](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model%20Hub-orange)](https://huggingface.co/alfeenafsal/phi2-qlora-finetune)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+- **Live Hugging Face Space**: [alfeenafsal/phi2-qlora-comparison](https://huggingface.co/spaces/alfeenafsal/phi2-qlora-comparison)
+- **Hugging Face Model Hub**: [alfeenafsal/phi2-qlora-finetune](https://huggingface.co/alfeenafsal/phi2-qlora-finetune)
+- **Canonical GitHub Repository**: [alfeenafsal11/phi2-qlora-finetune](https://github.com/alfeenafsal11/phi2-qlora-finetune)
+- **Selected Artifact**: Step 100 Checkpoint (`phi2-qlora-phase4-scaled-5k/checkpoint-100/`)
+- **Verified Benchmark**: 68.0% (34/50) Functional Pass Rate vs 52.0% (26/50) Base Model
+
 ---
 
 ## Project Achievements & Summary
@@ -179,17 +189,57 @@ venv\Scripts\activate            # Windows
 
 # Install dependencies
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-pip install transformers peft trl bitsandbytes datasets accelerate matplotlib
+pip install transformers peft trl bitsandbytes datasets accelerate matplotlib gradio
 ```
 
-### 2. Run Phase 4 Training (Config E)
+### 2. Run Interactive Model Comparator Locally
+
+A standalone Gradio comparator is included under `demo/app.py`. It compares the raw base model and the fine-tuned adapter side-by-side using adapter switching on a single in-memory model instance:
 
 ```bash
-# Execute Phase 4 training with response-only masking on 5,000 samples
-python train_phase4.py --output_dir phi2-qlora-phase4-scaled-5k --epochs 2
+python demo/app.py
+# Opens local UI at http://127.0.0.1:7860
 ```
 
-### 3. Evaluate on the 50-Task Out-of-Distribution Benchmark
+### 3. Load Fine-Tuned Adapter via Hugging Face Hub
+
+You can directly load the published LoRA adapter from Hugging Face Hub in 4-bit NF4 precision:
+
+```python
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from peft import PeftModel
+
+# Configure 4-bit NF4
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_use_double_quant=True,
+    bnb_4bit_quant_type="nf4",
+    bnb_4bit_compute_dtype=torch.bfloat16,
+)
+
+# Load frozen base model
+base_model = AutoModelForCausalLM.from_pretrained(
+    "microsoft/phi-2",
+    quantization_config=bnb_config,
+    device_map="auto",
+    trust_remote_code=True,
+)
+
+# Attach fine-tuned adapter from Hugging Face Hub
+model = PeftModel.from_pretrained(base_model, "alfeenafsal/phi2-qlora-finetune")
+model.eval()
+
+tokenizer = AutoTokenizer.from_pretrained("alfeenafsal/phi2-qlora-finetune", trust_remote_code=True)
+prompt = "### Instruction:\nWrite a Python function that checks if two strings are anagrams of each other.\n\n### Response:\n"
+inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+
+with torch.no_grad():
+    outputs = model.generate(**inputs, max_new_tokens=150, do_sample=False)
+print(tokenizer.decode(outputs[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True))
+```
+
+### 4. Evaluate on the 50-Task Out-of-Distribution Benchmark
 
 ```bash
 # Evaluate the best checkpoint (Step 100) on the 50-task benchmark
@@ -199,11 +249,32 @@ python eval_phase4.py \
     --mode both
 ```
 
-### 4. Inspect Final Stage Report
+---
 
-The primary deliverable and comprehensive scientific analysis is available at:
-- **Final Stage Report**: [`reports/phase4_project_report.md`](reports/phase4_project_report.md)
-- **Master Evaluation JSON**: [`reports/phase4_master_eval_results.json`](reports/phase4_master_eval_results.json)
+## Deployment Topology & Measured Hardware Limitations
+
+| Layer | Environment | Specification / Resource | Measured Latency / Footprint |
+|:---|:---|:---|:---|
+| **Source of Truth** | GitHub | Training, eval harness, reports, benchmark data | [alfeenafsal11/phi2-qlora-finetune](https://github.com/alfeenafsal11/phi2-qlora-finetune) |
+| **Model Hub** | Hugging Face Hub | LoRA delta weights (`adapter_model.safetensors`), configs | [alfeenafsal/phi2-qlora-finetune](https://huggingface.co/alfeenafsal/phi2-qlora-finetune) (~20 MB) |
+| **Public Space** | Hugging Face Spaces | Static interactive comparator & verified benchmark suite | [alfeenafsal/phi2-qlora-comparison](https://huggingface.co/spaces/alfeenafsal/phi2-qlora-comparison) |
+| **Local Comparator** | Local Machine | Gradio UI (`demo/app.py`), single-instance adapter switching | ~3.0s (Adapted, 17-45 tok) vs ~15-22s (Base runaway) |
+| **GPU Footprint** | NVIDIA RTX 4050 (6 GB) | 4-bit NF4 base + 16-bit LoRA adapter | Peak VRAM: ~3.1 GB |
+
+### Saved vs. Reproduced Results Ledger
+- **Master 50-Task Benchmark**: Evaluated in Phase 4 (`reports/phase4_master_eval_results.json`) achieving 68.0% (34/50) pass rate for Config E Step 100 vs 52.0% (26/50) for raw base model.
+- **Reproduced Smoke Tests**: Verified locally via `test_inference.py`, `eval_harness.py`, and `demo/app.py` under greedy decoding (`temp=0.0`). Demonstrated clean `<|endoftext|>` termination on anagrams, deduplication, fibonacci, and bug fixing tasks.
+- **Cloud Space Deployment Limitation**: Hugging Face Spaces free tier currently restricts Docker/Gradio compute for non-Pro accounts while supporting Static Spaces. The interactive web Space is deployed with verified benchmark evidence and side-by-side model generations, while live custom generation is executed locally via `demo/app.py` or via the published model hub weights.
+
+---
+
+## Intended Use & Safety Disclaimers
+
+> [!WARNING]
+> This adapter is an **experimental research artifact** created to investigate parameter-efficient adaptation, termination behavior, and response-only loss masking on consumer hardware.
+> - **Not Production Software**: Do not deploy this model in production environments without comprehensive human review and automated unit testing.
+> - **Code Sandboxing**: Generated code may contain subtle bugs, runtime exceptions, or security flaws. Always run generated code in a sandboxed execution environment.
+> - **Licensing**: Microsoft Phi-2 is licensed under the MIT License.
 
 ---
 

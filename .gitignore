@@ -84,3 +84,6 @@ reports/phase2b_attribution_eval_results.json
 reports/phase2b_data_pipeline_verification.json
 reports/eval_audit_full_results.json
 reports/eval_harness_regression_report.json
+
+# HF Staging
+hf_export_model/

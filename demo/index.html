@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phi-2 QLoRA Model Comparison & Benchmark Suite</title>
+  <meta name="description" content="Side-by-side empirical comparison between Microsoft's Phi-2 base model and its 4-bit QLoRA code generation adapter with verified benchmark evidence.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(20, 27, 45, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover: rgba(28, 38, 64, 0.85);
+      --primary: #6366f1;
+      --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+      --accent-cyan: #06b6d4;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --code-bg: #0d1117;
+      --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.1) 0%, transparent 45%);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 30px 20px 80px;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #a5b4fc;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 14px;
+    }
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto 20px;
+    }
+    .links-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 15px;
+    }
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .link-btn:hover {
+      background: var(--card-hover);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    /* Metrics Summary Cards */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 35px;
+    }
+    .metric-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: var(--primary-gradient);
+      opacity: 0.8;
+    }
+    .metric-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .metric-value {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin: 6px 0;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .metric-delta {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--accent-green);
+    }
+    .metric-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Tabs */
+    .tabs-nav {
+      display: flex;
+      gap: 10px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 25px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 10px 20px;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .tab-btn.active {
+      color: #fff;
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0; right: 0; height: 3px;
+      background: var(--primary);
+      border-radius: 3px;
+    }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Interactive Comparison Panel */
+    .prompt-selector-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+    .selector-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .pill-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .pill-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .pill-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .prompt-display {
+      margin-top: 15px;
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      border-left: 3px solid var(--accent-cyan);
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+    }
+
+    /* Comparison Columns */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+    @media (max-width: 860px) {
+      .comparison-grid { grid-template-columns: 1fr; }
+    }
+    .model-col {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .model-header {
+      padding: 16px 20px;
+      background: rgba(0, 0, 0, 0.25);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .model-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tag-base {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(148, 163, 184, 0.2);
+      color: #cbd5e1;
+    }
+    .tag-adapted {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+    }
+    .code-container {
+      flex: 1;
+      padding: 0;
+      background: var(--code-bg);
+      overflow-x: auto;
+      min-height: 220px;
+    }
+    .code-container pre {
+      margin: 0;
+      padding: 16px 20px;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .model-footer {
+      padding: 12px 20px;
+      background: rgba(0, 0, 0, 0.2);
+      border-top: 1px solid var(--card-border);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .status-tag {
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+    .status-pass { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .status-warn { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+
+    /* Tables */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow-x: auto;
+      margin-bottom: 25px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    th {
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+    .highlight-cell {
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    /* Notice & Disclaimers */
+    .notice-box {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-top: 25px;
+      font-size: 0.88rem;
+      color: #fde68a;
+    }
+
+    /* Code block in tabs */
+    .snippet-box {
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      position: relative;
+      margin-top: 10px;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--card-border);
+      color: #cbd5e1;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: var(--font-sans);
+    }
+    .copy-btn:hover { background: rgba(255, 255, 255, 0.2); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge-pill">
+        <span>⚡</span> ML Engineering Portfolio Project
+      </div>
+      <h1>Phi-2 QLoRA Model Comparison & Benchmark Suite</h1>
+      <p class="subtitle">
+        Empirical comparison between the frozen <strong>microsoft/phi-2</strong> base model (2.78B) and its <strong>4-bit QLoRA adapter</strong> (5.24M parameters / 0.19%) evaluated on a 50-task leak-free algorithmic benchmark.
+      </p>
+      <div class="links-bar">
+        <a href="https://github.com/alfeenafsal11/phi2-qlora-finetune" target="_blank" class="link-btn">
+          <span>📦</span> GitHub Repository
+        </a>
+        <a href="https://huggingface.co/alfeenafsal/phi2-qlora-finetune" target="_blank" class="link-btn">
+          <span>🤗</span> Hugging Face Model Card
+        </a>
+        <a href="https://github.com/alfeenafsal11/phi2-qlora-finetune/blob/main/reports/phase4_project_report.md" target="_blank" class="link-btn">
+          <span>📄</span> Phase 4 Evaluation Report
+        </a>
+      </div>
+    </header>
+
+    <!-- Key Metrics Grid -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <span class="metric-label">Functional Pass Rate</span>
+        <div class="metric-value">
+          68.0% <span class="metric-delta">+16.0%</span>
+        </div>
+        <span class="metric-desc">34/50 unit-tested tasks passed vs 26/50 (52%) for raw base model.</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">EOS Termination Rate</span>
+        <div class="metric-value">
+          96.0% <span class="metric-delta">+78.0%</span>
+        </div>
+        <span class="metric-desc">48/50 clean stops vs 9/50 (18%) raw (eliminated runaway loops).</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Runaway Token Cutoffs</span>
+        <div class="metric-value">
+          4.0% <span class="metric-delta" style="color: #38bdf8;">-80.0%</span>
+        </div>
+        <span class="metric-desc">Only 2/50 hit token ceiling vs 42/50 (84%) for raw base model.</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Parameter Footprint</span>
+        <div class="metric-value">
+          0.19% <span class="metric-delta" style="color: #a855f7;">5.24M / 2.78B</span>
+        </div>
+        <span class="metric-desc">Adapter safetensors footprint is ~20 MB; base weights remain frozen.</span>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('comparison')">⚡ Interactive Comparator</button>
+      <button class="tab-btn" onclick="switchTab('benchmark')">📊 50-Task Benchmark Evidence</button>
+      <button class="tab-btn" onclick="switchTab('methodology')">🔬 Methodology & Architecture</button>
+      <button class="tab-btn" onclick="switchTab('quickstart')">💻 Local Quickstart</button>
+    </div>
+
+    <!-- Tab 1: Interactive Comparator -->
+    <div id="tab-comparison" class="tab-pane active">
+      <div class="prompt-selector-box">
+        <div class="selector-title">
+          <span>Select Benchmark Prompt Category:</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">
+            Real generations from actual model evaluations under greedy decoding (temp=0.0)
+          </span>
+        </div>
+        <div class="pill-group" id="pillGroup">
+          <button class="pill-btn active" onclick="selectPrompt(0)">String Anagrams</button>
+          <button class="pill-btn" onclick="selectPrompt(1)">Deduplicate List</button>
+          <button class="pill-btn" onclick="selectPrompt(2)">Recursive Fibonacci</button>
+          <button class="pill-btn" onclick="selectPrompt(3)">BankAccount OOP</button>
+          <button class="pill-btn" onclick="selectPrompt(4)">Bug Fixing (Sum Evens)</button>
+        </div>
+        <div class="prompt-display" id="promptDisplay">Loading prompt...</div>
+      </div>
+
+      <div class="comparison-grid">
+        <!-- Raw Base Column -->
+        <div class="model-col">
+          <div class="model-header">
+            <div class="model-name">
+              <span>🏛️</span> Raw Phi-2 Base Model
+              <span class="tag-base">microsoft/phi-2</span>
+            </div>
+            <span class="status-tag status-warn" id="baseStatusTag">⚠️ Runaway Continuation</span>
+          </div>
+          <div class="code-container">
+            <pre><code class="language-python" id="baseCodeBlock"># Loading base generation...</code></pre>
+          </div>
+          <div class="model-footer" id="baseFooter">
+            <span>⏱️ Latency: --</span>
+            <span>🔤 Length: -- tokens</span>
+          </div>
+        </div>
+
+        <!-- Fine-Tuned Adapter Column -->
+        <div class="model-col">
+          <div class="model-header">
+            <div class="model-name">
+              <span>🚀</span> Fine-Tuned QLoRA Adapter
+              <span class="tag-adapted">Config E (Step 100)</span>
+            </div>
+            <span class="status-tag status-pass" id="adaptedStatusTag">✅ Clean EOS Stop</span>
+          </div>
+          <div class="code-container">
+            <pre><code class="language-python" id="adaptedCodeBlock"># Loading adapted generation...</code></pre>
+          </div>
+          <div class="model-footer" id="adaptedFooter">
+            <span>⏱️ Latency: --</span>
+            <span>🔤 Length: -- tokens</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice-box">
+        <strong>💡 Key Empirical Observation:</strong> Notice how the raw base model exhibits runaway generation—hallucinating subsequent exercises, prompt tokens (<code>### Exercise 5</code>, <code>### Instruction:</code>), and hitting the maximum token limit. The fine-tuned QLoRA adapter cleanly terminates generation with <code>&lt;|endoftext|&gt;</code> immediately upon completing the requested function.
+      </div>
+    </div>
+
+    <!-- Tab 2: 50-Task Benchmark Evidence -->
+    <div id="tab-benchmark" class="tab-pane">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Model / Configuration</th>
+              <th>Training Scope</th>
+              <th>Target Modules</th>
+              <th>Resp Loss</th>
+              <th>Core Pass% (50 Tasks)</th>
+              <th>EOS Term%</th>
+              <th>Max-Token%</th>
+              <th>Mean Length</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Raw Phi-2 Base</strong></td>
+              <td>Pretrained (2.78B)</td>
+              <td>None</td>
+              <td>0.5792</td>
+              <td>52.0% (26/50)</td>
+              <td>18.0%</td>
+              <td>84.0%</td>
+              <td>284.6 tok</td>
+            </tr>
+            <tr>
+              <td><strong>Phase 2 Corrected (Ref)</strong></td>
+              <td>2,000 samples</td>
+              <td>q_proj, v_proj</td>
+              <td>0.4471</td>
+              <td>62.0% (31/50)</td>
+              <td>94.0%</td>
+              <td>6.0%</td>
+              <td>112.8 tok</td>
+            </tr>
+            <tr>
+              <td><strong>Config A (Attn-Only, 2k)</strong></td>
+              <td>2,000 samples</td>
+              <td>q_proj, v_proj</td>
+              <td>0.4522</td>
+              <td>62.0% (31/50)</td>
+              <td>98.0%</td>
+              <td>2.0%</td>
+              <td>112.8 tok</td>
+            </tr>
+            <tr>
+              <td><strong>Config B (Full-Attn, 2k)</strong></td>
+              <td>2,000 samples</td>
+              <td>q, k, v, dense</td>
+              <td>0.4477</td>
+              <td>54.0% (27/50)</td>
+              <td>90.0%</td>
+              <td>10.0%</td>
+              <td>121.9 tok</td>
+            </tr>
+            <tr>
+              <td><strong>Config C (All-Linear, 2k)</strong></td>
+              <td>2,000 samples</td>
+              <td>q, k, v, dense, fc1, fc2</td>
+              <td>0.4442</td>
+              <td>60.0% (30/50)</td>
+              <td>98.0%</td>
+              <td>2.0%</td>
+              <td>115.6 tok</td>
+            </tr>
+            <tr>
+              <td><strong>Config D (Masking-Ablation, 2k)</strong></td>
+              <td>2,000 samples</td>
+              <td>q_proj, v_proj (no mask)</td>
+              <td>0.4489</td>
+              <td>62.0% (31/50)</td>
+              <td>98.0%</td>
+              <td>2.0%</td>
+              <td>114.1 tok</td>
+            </tr>
+            <tr style="background: rgba(99, 102, 241, 0.1);">
+              <td><strong>Config E (5k, Step 100) [BEST]</strong></td>
+              <td>5,000 samples</td>
+              <td>q_proj, v_proj</td>
+              <td class="highlight-cell">0.4803</td>
+              <td class="highlight-cell">68.0% (34/50)</td>
+              <td class="highlight-cell">96.0%</td>
+              <td class="highlight-cell">4.0%</td>
+              <td class="highlight-cell">115.4 tok</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-container" style="margin-top: 25px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Algorithmic Category</th>
+              <th>Task Count</th>
+              <th>Raw Phi-2 Base</th>
+              <th>Config E Step 100</th>
+              <th>Improvement Delta</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>String Manipulation</td>
+              <td>6</td>
+              <td>2/6 (33%)</td>
+              <td>3/6 (50%)</td>
+              <td class="highlight-cell">+17%</td>
+            </tr>
+            <tr>
+              <td>Data Structures</td>
+              <td>8</td>
+              <td>3/8 (38%)</td>
+              <td>5/8 (63%)</td>
+              <td class="highlight-cell">+25%</td>
+            </tr>
+            <tr>
+              <td>Sorting & Searching</td>
+              <td>6</td>
+              <td>3/6 (50%)</td>
+              <td>5/6 (83%)</td>
+              <td class="highlight-cell">+33%</td>
+            </tr>
+            <tr>
+              <td>Recursion & Dynamic Programming</td>
+              <td>8</td>
+              <td>5/8 (63%)</td>
+              <td>7/8 (88%)</td>
+              <td class="highlight-cell">+25%</td>
+            </tr>
+            <tr>
+              <td>OOP & Class Definitions</td>
+              <td>6</td>
+              <td>3/6 (50%)</td>
+              <td>4/6 (67%)</td>
+              <td class="highlight-cell">+17%</td>
+            </tr>
+            <tr>
+              <td>File I/O & Exception Handling</td>
+              <td>4</td>
+              <td>1/4 (25%)</td>
+              <td>2/4 (50%)</td>
+              <td class="highlight-cell">+25%</td>
+            </tr>
+            <tr>
+              <td>Algorithm Complexity & Edge Cases</td>
+              <td>6</td>
+              <td>5/6 (83%)</td>
+              <td>3/6 (50%)</td>
+              <td style="color: var(--text-muted);">-33%</td>
+            </tr>
+            <tr>
+              <td>Bug Fixing</td>
+              <td>6</td>
+              <td>4/6 (67%)</td>
+              <td>5/6 (83%)</td>
+              <td class="highlight-cell">+16%</td>
+            </tr>
+            <tr style="font-weight: 700; background: rgba(0,0,0,0.3);">
+              <td>Overall 50-Task Total</td>
+              <td>50</td>
+              <td>26/50 (52.0%)</td>
+              <td>34/50 (68.0%)</td>
+              <td class="highlight-cell">+16.0%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 3: Methodology & Architecture -->
+    <div id="tab-methodology" class="tab-pane">
+      <div class="table-container" style="padding: 24px;">
+        <h3 style="margin-bottom: 15px; color: #fff;">🔬 Scientific Fine-Tuning Pipeline</h3>
+        <p style="color: var(--text-muted); margin-bottom: 15px;">
+          The project systematically addressed common low-resource fine-tuning failure modes:
+        </p>
+        <ul style="padding-left: 20px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.8;">
+          <li><strong style="color: #fff;">Context Loss Recovery:</strong> Identified that an initial preprocessing pipeline dropped the <code>input</code> column in 69% of records. Restored full input preservation.</li>
+          <li><strong style="color: #fff;">EOS Supervision:</strong> Proved in Phase 2B that omitted EOS tokens caused a 75% rate of runaway text generation. Enforced terminal <code>&lt;|endoftext|&gt;</code> token loss.</li>
+          <li><strong style="color: #fff;">Response-Only Masking:</strong> Implemented <code>Phase2CompletionCollator</code> to restrict gradient updates solely to the generated code response, cutting training wall-clock time by 5.27× over full-sequence masking.</li>
+          <li><strong style="color: #fff;">LoRA Target Scope:</strong> Evaluated Attention-only (<code>q_proj, v_proj</code>) vs Full-Attention vs All-Linear, confirming Attention-only is parameter-optimal at 5.24M parameters.</li>
+          <li><strong style="color: #fff;">Hardware Discipline:</strong> Executed training and evaluation within the memory confines of a 6 GB consumer GPU (NVIDIA RTX 4050) with a peak VRAM allocation of ~3.1 GB.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Tab 4: Quickstart -->
+    <div id="tab-quickstart" class="tab-pane">
+      <div class="table-container" style="padding: 24px;">
+        <h3 style="margin-bottom: 12px; color: #fff;">💻 Run Inference Locally</h3>
+        <p style="color: var(--text-muted); margin-bottom: 10px;">
+          Load the adapter directly from Hugging Face Hub on your local GPU or CPU:
+        </p>
+        <div class="snippet-box">
+          <button class="copy-btn" onclick="copySnippet()">Copy</button>
+<pre id="pythonSnippet">import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from peft import PeftModel
+
+# Configure 4-bit NF4 quantization (or remove for CPU)
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_use_double_quant=True,
+    bnb_4bit_quant_type="nf4",
+    bnb_4bit_compute_dtype=torch.bfloat16,
+)
+
+# Load base model & attach adapter
+base_model = AutoModelForCausalLM.from_pretrained(
+    "microsoft/phi-2",
+    quantization_config=bnb_config,
+    device_map="auto",
+    trust_remote_code=True,
+)
+model = PeftModel.from_pretrained(base_model, "alfeenafsal/phi2-qlora-finetune")
+model.eval()
+
+tokenizer = AutoTokenizer.from_pretrained("alfeenafsal/phi2-qlora-finetune", trust_remote_code=True)
+prompt = "### Instruction:\nWrite a Python function that checks if two strings are anagrams.\n\n### Response:\n"
+inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+
+with torch.no_grad():
+    out = model.generate(**inputs, max_new_tokens=150, do_sample=False)
+print(tokenizer.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True))</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Research Disclaimer -->
+    <div class="notice-box" style="margin-top: 40px; border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.08); color: #fca5a5;">
+      <strong>⚠️ Research Demonstration & Safety Disclaimer:</strong><br/>
+      This project is an experimental code-generation fine-tune developed for research and educational purposes. It is <strong>not</strong> a production-grade coding assistant. Outputs may contain logical flaws or edge-case bugs. Generated code must always be executed inside a sandboxed environment and reviewed before use.
+    </div>
+  </div>
+
+  <script>
+    let comparisons = [];
+
+    // Embedded verified comparison data
+    const VERIFIED_DATA = [
+      {
+        "category": "String Manipulation",
+        "prompt": "Write a Python function that checks if two strings are anagrams of each other (case-insensitive).",
+        "base_output": "```python\ndef is_anagram(s1, s2):\n    s1 = s1.lower()\n    s2 = s2.lower()\n    return sorted(s1) == sorted(s2)\n\nprint(is_anagram(\"Listen\", \"silent\")) # True\nprint(is_anagram(\"Python\", \"java\")) # False\n```\n\n### Exercise 5:\nWrite a Python function that takes a string and returns a new string with all vowels removed.\n\n### Instruction:\nWrite a Python function that takes a string and returns a new string with all vowels removed.\n\n### Response:\n```python\ndef remove_v",
+        "base_meta": "⏱️ Latency: 22.8s | 🔤 Tokens: 150 (6.6 tok/s) | ⚠️ Cut off by token limit / runaway loop",
+        "adapted_output": "def is_anagram(str1, str2):\n    str1 = str1.lower()\n    str2 = str2.lower()\n    return sorted(str1) == sorted(str2)",
+        "adapted_meta": "⏱️ Latency: 3.8s | 🔤 Tokens: 29 (7.6 tok/s) | ✅ Clean EOS Stop"
+      },
+      {
+        "category": "Data Structures",
+        "prompt": "Write a Python function that removes duplicates from a list while preserving the original element order.",
+        "base_output": "```python\ndef remove_duplicates(lst):\n    return list(dict.fromkeys(lst))\n\nprint(remove_duplicates([1, 2, 2, 3, 4, 4, 5]))\n```\n\n### Exercise 5:\nWrite a Python function that takes a list of integers and returns the sum of all the even numbers.\n\n### Instruction:\nWrite a Python function that takes a list of integers and returns the sum of all the even numbers.\n\n### Response:\n```python\ndef sum_even_numbers(lst",
+        "base_meta": "⏱️ Latency: 22.1s | 🔤 Tokens: 150 (6.8 tok/s) | ⚠️ Cut off by token limit / runaway loop",
+        "adapted_output": "def remove_duplicates(lst):\n    seen = set()\n    result = []\n    for item in lst:\n        if item not in seen:\n            seen.add(item)\n            result.append(item)\n    return result",
+        "adapted_meta": "⏱️ Latency: 5.6s | 🔤 Tokens: 43 (7.7 tok/s) | ✅ Clean EOS Stop"
+      },
+      {
+        "category": "Recursion & DP",
+        "prompt": "Write a recursive Python function to compute the nth Fibonacci number.",
+        "base_output": "```python\ndef fibonacci(n):\n    if n <= 1:\n        return n\n    else:\n        return fibonacci(n-1) + fibonacci(n-2)\n\nprint(fibonacci(10))\n```\n\n### Exercise 5:\nWrite a recursive Python function to calculate the factorial of a given number.\n\n### Instruction:\nWrite a recursive Python function to calculate the factorial of a given number.\n\n### Response:\n```python\ndef factorial(n):\n    if n ==",
+        "base_meta": "⏱️ Latency: 22.4s | 🔤 Tokens: 150 (6.7 tok/s) | ⚠️ Cut off by token limit / runaway loop",
+        "adapted_output": "def fibonacci(n):\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fibonacci(n - 1) + fibonacci(n - 2)",
+        "adapted_meta": "⏱️ Latency: 4.8s | 🔤 Tokens: 37 (7.7 tok/s) | ✅ Clean EOS Stop"
+      },
+      {
+        "category": "OOP & Classes",
+        "prompt": "Write a Python class representing a BankAccount with deposit, withdraw, and get_balance methods.",
+        "base_output": "```python\nclass BankAccount:\n    def __init__(self, initial_balance=0):\n        self.balance = initial_balance\n\n    def deposit(self, amount):\n        self.balance += amount\n\n    def withdraw(self, amount):\n        if amount <= self.balance:\n            self.balance -= amount\n        else:\n            print(\"Insufficient funds\")\n\n    def get_balance(self):\n        return self.balance\n```\n\n### Exercise 5:\nWrite a Python class representing a Rectangle with width and height attributes",
+        "base_meta": "⏱️ Latency: 22.7s | 🔤 Tokens: 150 (6.6 tok/s) | ⚠️ Cut off by token limit / runaway loop",
+        "adapted_output": "class BankAccount:\n    def __init__(self, initial_balance=0):\n        self.balance = initial_balance\n\n    def deposit(self, amount):\n        if amount > 0:\n            self.balance += amount\n        else:\n            raise ValueError(\"Deposit amount must be positive.\")\n\n    def withdraw(self, amount):\n        if amount > self.balance:\n            raise ValueError(\"Insufficient funds.\")\n        elif amount <= 0:\n            raise ValueError(\"Withdrawal amount must be positive.\")\n        else:\n            self.balance -= amount\n\n    def get_balance(self):\n        return self.balance",
+        "adapted_meta": "⏱️ Latency: 16.2s | 🔤 Tokens: 125 (7.7 tok/s) | ✅ Clean EOS Stop"
+      },
+      {
+        "category": "Bug Fixing",
+        "prompt": "The following function is supposed to return the sum of all even numbers in a list, but contains a syntax/logic bug. Fix it:\n\ndef sum_evens(lst):\n    total = 0\n    for x in lst:\n        if x % 2 = 0:\n            total += x\n    return total",
+        "base_output": "```python\ndef sum_evens(lst):\n    total = 0\n    for x in lst:\n        if x % 2 == 0:\n            total += x\n    return total\n\nprint(sum_evens([1, 2, 3, 4, 5, 6])) # Output: 12\n```\n\n### Exercise 5:\nThe following function is supposed to return the reverse of a string, but it has a bug. Fix it:\n\ndef reverse_string(s):\n    return s[::-1]\n\n### Instruction:\nThe following function is supposed to return the reverse of",
+        "base_meta": "⏱️ Latency: 22.3s | 🔤 Tokens: 150 (6.7 tok/s) | ⚠️ Cut off by token limit / runaway loop",
+        "adapted_output": "def sum_evens(lst):\n    total = 0\n    for x in lst:\n        if x % 2 == 0:\n            total += x\n    return total",
+        "adapted_meta": "⏱️ Latency: 4.4s | 🔤 Tokens: 34 (7.7 tok/s) | ✅ Clean EOS Stop"
+      }
+    ];
+
+    function selectPrompt(idx) {
+      const data = VERIFIED_DATA[idx];
+      document.getElementById('promptDisplay').innerText = data.prompt;
+      
+      const baseCode = document.getElementById('baseCodeBlock');
+      baseCode.textContent = data.base_output;
+      delete baseCode.dataset.highlighted;
+      
+      const adaptedCode = document.getElementById('adaptedCodeBlock');
+      adaptedCode.textContent = data.adapted_output;
+      delete adaptedCode.dataset.highlighted;
+      
+      hljs.highlightElement(baseCode);
+      hljs.highlightElement(adaptedCode);
+
+      document.getElementById('baseFooter').innerHTML = data.base_meta;
+      document.getElementById('adaptedFooter').innerHTML = data.adapted_meta;
+
+      const pills = document.querySelectorAll('.pill-btn');
+      pills.forEach((p, i) => {
+        p.classList.toggle('active', i === idx);
+      });
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+
+      event.target.classList.add('active');
+      document.getElementById('tab-' + tabId).classList.add('active');
+    }
+
+    function copySnippet() {
+      const code = document.getElementById('pythonSnippet').innerText;
+      navigator.clipboard.writeText(code);
+      event.target.innerText = 'Copied!';
+      setTimeout(() => { event.target.innerText = 'Copy'; }, 2000);
+    }
+
+    // Initialize with first prompt
+    document.addEventListener('DOMContentLoaded', () => {
+      selectPrompt(0);
+    });
+  </script>
+</body>
+</html>
